@@ -33,26 +33,30 @@ class form;
 class cusgame : public QMainWindow
 {
     Q_OBJECT
-
 public:
+    void record();
+    explicit cusgame(QWidget *parent = nullptr);
+    ~cusgame();
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
+    void keyReleaseEvent(QKeyEvent *e);
     void changeEvent(QEvent *event);        //窗口最小化后暂停
     void closeEvent(QCloseEvent *event);
     void updateScore();                     //更新分数的数据和显示
     void setTimer();                        //设置计时器，方便加速
-    explicit cusgame(QWidget *parent = nullptr);
-    ~cusgame();
 public slots:
     void onTimer();
-
+public slots:
+    void onrepeatTimer();
 private:
-
     int speed;
     int nextStage;
+    Qt::Key key;
+    Qt::Key keytemp;
     QMessageBox *box1=new QMessageBox();
     int status;                     //游戏状态
     CTetromino tetris;                  //俄罗斯方块类对象
     QTimer *timer;                  //计时器
+    QTimer *repeatTimer;
     TetrisBox *tetrisBox;           //游戏窗口
     NextTetrisBox *nextTetrisBox;   //“下一个”窗口
     QGridLayout *mainLayout;        //mainLayout

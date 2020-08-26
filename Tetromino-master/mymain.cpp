@@ -87,12 +87,16 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
 
     nextStage = 100;
     speed = 100;
+    key = Qt::Key_0;
+    keytemp = key;
 
     status = STATUS_OFF;
     nextTetrisBox->updateNextTetris(tetris);
     setWindowTitle(tr("Tetromino - OFF"));
     timer = new QTimer(this);
+    repeatTimer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
 }
 
 mymain::~mymain()
@@ -115,6 +119,13 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
+                if(key == Qt::Key_0)
+                {
+                    key = Qt::Key_D;
+                }
+                else if (key == Qt::Key_A) {
+                    keytemp = Qt::Key_D;
+                }
             }
         }
     }
@@ -125,7 +136,13 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-
+                if(key == Qt::Key_0)
+                {
+                    key = Qt::Key_A;
+                }
+                else if (key == Qt::Key_D) {
+                    keytemp = Qt::Key_A;
+                }
             }
         }
     }
@@ -161,6 +178,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
             if (status == STATUS_ON)
             {
                 tetrisBox->updateTetris(tetris);
+                repeatTimer->start(100);
             }
         }
     }
@@ -323,6 +341,43 @@ void mymain::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void mymain::keyReleaseEvent(QKeyEvent *e)
+{
+    if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
+    {
+        repeatTimer->stop();
+
+        key = keytemp;
+        keytemp = Qt::Key_0;
+
+    }
+
+}
+
+void mymain::onrepeatTimer()
+{
+    if(key == Qt::Key_D)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToRight())
+            {
+                tetrisBox->updateTetris(tetris);
+                qDebug("moving right");
+            }
+        }
+    }
+    else if (key == Qt::Key_A) {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToLeft())
+            {
+                tetrisBox->updateTetris(tetris);
+                qDebug("moving left");
+            }
+        }
+    }
+}
 
 void mymain::onTimer()
 {

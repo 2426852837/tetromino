@@ -88,12 +88,16 @@ cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
 
     nextStage = 100;
     speed = 100;
+    key = Qt::Key_0;
+    keytemp = key;
 
     status = STATUS_OFF;
     nextTetrisBox->updateNextTetris(tetris);
     setWindowTitle(tr("Custom mode Tetromino - OFF"));
     timer = new QTimer(this);
+    repeatTimer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
+    connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
 }
 
 cusgame::~cusgame()
@@ -116,6 +120,13 @@ void cusgame::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
+                if(key == Qt::Key_0)
+                {
+                    key = Qt::Key_D;
+                }
+                else if (key == Qt::Key_A) {
+                    keytemp = Qt::Key_D;
+                }
             }
         }
     }
@@ -126,7 +137,13 @@ void cusgame::keyPressEvent(QKeyEvent *event)
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-
+                if(key == Qt::Key_0)
+                {
+                    key = Qt::Key_A;
+                }
+                else if (key == Qt::Key_D) {
+                    keytemp = Qt::Key_A;
+                }
             }
         }
     }
@@ -151,7 +168,7 @@ void cusgame::keyPressEvent(QKeyEvent *event)
                 str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
                 QMessageBox::information(this, tr("Game Over1"), str);
                 status = STATUS_END;
-                setWindowTitle(tr("Custom mode Tetromino - END"));
+                setWindowTitle(tr("Tetromino - END"));
             }
         }
     }
@@ -162,6 +179,7 @@ void cusgame::keyPressEvent(QKeyEvent *event)
             if (status == STATUS_ON)
             {
                 tetrisBox->updateTetris(tetris);
+                repeatTimer->start(100);
             }
         }
     }
@@ -324,6 +342,43 @@ void cusgame::keyPressEvent(QKeyEvent *event)
     }
 }
 
+void cusgame::keyReleaseEvent(QKeyEvent *e)
+{
+    if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
+    {
+        repeatTimer->stop();
+
+            key = keytemp;
+            keytemp = Qt::Key_0;
+
+    }
+
+}
+
+void cusgame::onrepeatTimer()
+{
+    if(key == Qt::Key_D)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToRight())
+            {
+                tetrisBox->updateTetris(tetris);
+                qDebug("moving right");
+            }
+        }
+    }
+    else if (key == Qt::Key_A) {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToLeft())
+            {
+                tetrisBox->updateTetris(tetris);
+                qDebug("moving left");
+            }
+        }
+    }
+}
 
 void cusgame::onTimer()
 {
