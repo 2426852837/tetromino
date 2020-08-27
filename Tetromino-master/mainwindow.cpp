@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     pal.setBrush(QPalette::Window,QBrush(pixmap));
     setPalette(pal);
     setAutoFillBackground(true);
+    isCus = false;
 }
 
 

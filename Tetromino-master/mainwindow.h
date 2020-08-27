@@ -19,16 +19,15 @@ class Dialog;
 class mymain;
 QT_END_NAMESPACE
 
+extern bool isCus;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
-
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-
-
 
 private slots:
 

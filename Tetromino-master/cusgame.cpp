@@ -3,11 +3,10 @@
 #include <QMediaPlayer>
 #include <QFontDatabase>
 #include "mainwindow.h"
+#include "form.h"
 
 cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
 {
-
-
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
 
@@ -26,8 +25,9 @@ cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
     spaceLabel = new QLabel(tr("<font color = white>Space-SKIP</font>"));
     scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
     scoreLabel = new QLabel(tr("<font color = white>0</font>"));
+
     diffTitleLabel = new QLabel(tr("<font color = white>SPEED:</font>"));
-    diffLabel = new QLabel(tr("<font color = white>500</font>"));
+    diffLabel = new QLabel(tr("<font color = white></font>"));
     QFont font("Microsoft YaHei", 15, 75);
     font.setFamily(fontFamilies.at(0));
 
@@ -70,7 +70,7 @@ cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
     mainLayout->addWidget(scoreTitleLabel, 12, 3);
     mainLayout->addWidget(scoreLabel, 12, 4);
     mainLayout->addWidget(diffTitleLabel, 13,3);
-    mainLayout->addWidget(diffLabel, 13, 4);
+
 
     QWidget *widget = new QWidget(this);
     widget->setLayout(mainLayout);
@@ -86,10 +86,10 @@ cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
     int h = 5;
     move(w, h);
 
-    nextStage = 100;
-    speed = 100;
     key = Qt::Key_0;
     keytemp = key;
+
+    speed = custom.getspeed();
 
     status = STATUS_OFF;
     nextTetrisBox->updateNextTetris(tetris);
@@ -106,7 +106,7 @@ cusgame::~cusgame()
 }
 
 void cusgame::setTimer(){
-    timer->start(speed);
+    timer->start(custom.getspeed());
 }
 
 
@@ -211,9 +211,9 @@ void cusgame::keyPressEvent(QKeyEvent *event)
     {
         if (status == STATUS_PAUSE)
         {
-            timer->start(speed);
+            timer->start(custom.getspeed());
             status = STATUS_ON;
-            setWindowTitle(tr("Game_Tetris - ON"));
+            setWindowTitle(tr("Custom mode Tetromino - ON"));
         }
         else if (status == STATUS_OFF)
         {
@@ -221,24 +221,32 @@ void cusgame::keyPressEvent(QKeyEvent *event)
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
             updateScore();
-            speed = 500;
-            nextStage = 100;
+            QString strspeed=QString::number(custom.getspeed());
+
+
+            int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
+            QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+
+            QFont font("Microsoft YaHei", 15, 75);
+            font.setFamily(fontFamilies.at(0));
+            diffLabel->setFont(font);
+            diffLabel->setStyleSheet("QLabel{color:white;}");
+            diffLabel->setText(strspeed);
+            mainLayout->addWidget(diffLabel, 13, 4);
             status = STATUS_ON;
-            setWindowTitle(tr("Game_Tetris - ON"));
-            timer->start(speed);
+            setWindowTitle(tr("Custom mode Tetromino - ON"));
+            timer->start(custom.getspeed());
         }
         else if (status == STATUS_END)
         {
             tetris.clear();
             tetris.createBlock();
-            speed = 500;
-            nextStage = 100;
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
             updateScore();
             status = STATUS_ON;
-            setWindowTitle(tr("Game_Tetris - ON"));
-            timer->start(speed);
+            setWindowTitle(tr("Custom mode Tetromino - ON"));
+            timer->start(custom.getspeed());
         }
     }
     else if (event->key() == Qt::Key_P)
@@ -309,7 +317,7 @@ void cusgame::keyPressEvent(QKeyEvent *event)
             {
                 if(status==STATUS_ON)
                 {
-                    timer->start(speed);
+                    timer->start(custom.getspeed());
                     return;
                 }
             }
@@ -348,8 +356,8 @@ void cusgame::keyReleaseEvent(QKeyEvent *e)
     {
         repeatTimer->stop();
 
-            key = keytemp;
-            keytemp = Qt::Key_0;
+        key = keytemp;
+        keytemp = Qt::Key_0;
 
     }
 
@@ -364,7 +372,6 @@ void cusgame::onrepeatTimer()
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
-                qDebug("moving right");
             }
         }
     }
@@ -374,7 +381,6 @@ void cusgame::onrepeatTimer()
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-                qDebug("moving left");
             }
         }
     }
@@ -405,22 +411,21 @@ void cusgame::onTimer()
 
 void cusgame::updateScore()
 {
-    QString str,strDiff;
+    QString str;
     int score = tetris.getScore();
-    int diff = tetris.getDiff();
+
     str += QString("%1").arg(score);
-    strDiff += QString("%1").arg(diff);
+
     scoreLabel->setText(str);
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
     scoreLabel->setText(str);
-    diffLabel->setText(strDiff);
+
     QFont font("Microsoft YaHei", 15, 75);
     font.setFamily(fontFamilies.at(0));
     scoreLabel->setFont(font);
     scoreLabel->setStyleSheet("QLabel{color:white;}");
-    diffLabel->setFont(font);
-    diffLabel->setStyleSheet("QLabel{color:white;}");
+
 }
 
 void cusgame::changeEvent(QEvent *event)

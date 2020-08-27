@@ -30,7 +30,6 @@ class mymain : public QMainWindow
 {
     Q_OBJECT
 public:
-    void record();
     explicit mymain(QWidget *parent = nullptr);
     ~mymain();
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
@@ -71,9 +70,6 @@ private:
     QLabel *scoreLabel;             //分数标签（用来显示分数）
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
-
-signals:
-
 
 };
 
