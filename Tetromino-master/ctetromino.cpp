@@ -282,10 +282,37 @@ void CTetromino::createNextBlock()
 {
     int centerX = (MAXX - 1) / 2;   //中心x坐标
     int ID = 0;
-    qDebug()<<isCus;
     if(isCus == true)
     {
-
+        int t=0;
+        int len = custom.getish()+custom.getjsh()+custom.getlsh()+custom.getosh()+custom.getssh()+custom.gettsh()+custom.getzsh();
+        qDebug("len: %d",len);
+        qDebug("jsh: %d", custom.getjsh());
+        int temp[7];
+        temp[0] = custom.getosh();
+        temp[1] = custom.getish();
+        temp[2] = custom.getzsh();
+        temp[3] = custom.getssh();
+        temp[4] = custom.getjsh();
+        temp[5] = custom.getlsh();
+        temp[6] = custom.gettsh();
+        int a[len];
+        for(int i = 0; i < len; i++)
+        {
+            a[i] = 0;
+        }
+        qDebug("im here");
+        for(int i = 0; i < 7; i++)
+        {
+            for(int j=0;j<temp[i];j++)
+            {
+                qDebug()<<t;
+                a[t++]=i;
+                qDebug()<<a[t];
+            }
+        }
+        int rand1=rand() % len;
+        ID=a[rand1];
     }
     else
     {

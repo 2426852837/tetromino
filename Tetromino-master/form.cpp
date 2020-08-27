@@ -28,8 +28,7 @@ void Form::on_pushButton_2_clicked()
 
 void Form::on_pushButton_clicked()
 {
-    isCus = true;
-    cusgame = new Cusgame(this);
+
 
     ishape=ui->ishape->text();
     jshape=ui->jshape->text();
@@ -39,10 +38,11 @@ void Form::on_pushButton_clicked()
     tshape=ui->tshape->text();
     sshape=ui->sshape->text();
     speed=ui->speed->text();
-
+    isCus = true;
 
     if((isDigitStr(ishape))&&(isDigitStr(jshape))&&(isDigitStr(lshape))&&(isDigitStr(oshape))&&(isDigitStr(zshape))&&(isDigitStr(tshape))&&(isDigitStr(sshape))&&(isDigitStr(speed)))
     {
+        int len = 0;
         int ish=ishape.toInt();
         int jsh=jshape.toInt();
         int lsh=lshape.toInt();
@@ -51,7 +51,15 @@ void Form::on_pushButton_clicked()
         int tsh=tshape.toInt();
         int ssh=sshape.toInt();
         int spe=speed.toInt();
+        len= ish+jsh+lsh+osh+zsh+tsh+ssh;
+        if(len == 0)
+        {
+            QMessageBox::information(this,"错误","方块数目不能全为0，请重新输入");
+            return;
+        }
         custom.setallnumber(ish,jsh,lsh,osh,zsh,tsh,ssh,spe);
+
+        cusgame = new Cusgame(this);
         this->hide();
         cusgame->show();
     }
