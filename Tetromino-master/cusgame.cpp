@@ -98,6 +98,7 @@ Cusgame::Cusgame(QWidget *parent) : QMainWindow(parent)
     repeatTimer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
+
 }
 
 Cusgame::~Cusgame()
@@ -161,7 +162,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
             else
             {
                 QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
+                effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
                 effect->play();
                 timer->stop();
                 QString str;
@@ -194,7 +195,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
             else
             {
                 QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("./res/sound/so_good.mp3"));
+                effect->setMedia(QUrl::fromLocalFile("./sound/so_good.mp3"));
                 effect->play();
                 timer->stop();
                 QString str;
@@ -403,11 +404,100 @@ void Cusgame::onTimer()
         status = STATUS_END;
         setWindowTitle(tr("Custom mode Tetromino - END"));
         QMediaPlayer *effect = new QMediaPlayer;
-        effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
+        effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
         effect->play();
     }
 }
 
+void Cusgame::mousePressEvent(QMouseEvent *event)
+{
+    start = event->pos();
+    timer->stop();
+}
+
+void Cusgame::mouseMoveEvent(QMouseEvent *e)
+{
+    movement = e->pos();
+    int x = movement.x() - start.x();
+    int y = movement.y() - start.y();
+
+    if(x >= 34)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToRight())
+            {
+                start.setX(e->x());
+                tetrisBox->updateTetris(tetris);
+            }
+        }
+    }
+    else if (x <= -34)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToLeft())
+            {
+                start.setX(e->x());
+                tetrisBox->updateTetris(tetris);
+            }
+        }
+    }
+    if(y >= 34)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToBottom())
+            {
+                start.setY(e->y());
+                tetrisBox->updateTetris(tetris);
+                nextTetrisBox->updateNextTetris(tetris);
+                updateScore();
+            }
+            else
+            {
+                QMediaPlayer *effect = new QMediaPlayer;
+                effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
+                effect->play();
+                timer->stop();
+                QString str;
+                str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
+                QMessageBox::information(this, tr("Game Over1"), str);
+                status = STATUS_END;
+                setWindowTitle(tr("Tetromino - END"));
+            }
+        }
+
+    }
+    else if (y <= -34)
+    {
+        if (status == STATUS_ON)
+        {
+            if (tetris.moveToUp())
+            {
+                start.setY(e->y());
+                tetrisBox->updateTetris(tetris);
+            }
+        }
+    }
+}
+
+void Cusgame::mouseReleaseEvent(QMouseEvent *e)
+{
+    timer->start(custom.getspeed());
+}
+
+void Cusgame::wheelEvent(QWheelEvent *e)
+{
+    if (tetris.rotate())
+    {
+        if (status == STATUS_ON)
+        {
+            tetrisBox->updateTetris(tetris);
+            repeatTimer->start(100);
+        }
+    }
+}
 
 void Cusgame::updateScore()
 {

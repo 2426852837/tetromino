@@ -122,6 +122,18 @@ bool CTetromino::moveToRight()
     }
 }
 
+bool CTetromino::moveToUp()
+{
+    if (move(0, -1))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
 int CTetromino::getDiff()
 {
     return diff;
@@ -214,7 +226,7 @@ void CTetromino::killLines()
     }
     if(count!=0){
         QMediaPlayer *effect = new QMediaPlayer;
-        effect->setMedia(QUrl::fromLocalFile("C:\\Users\\10852\\Desktop\\WorkSpace\\Qt\\Tetromino\\so_good.mp3"));
+        effect->setMedia(QUrl::fromLocalFile("./sound/so_good.mp3"));
         effect->play();
     }
     //消行的分数奖励

@@ -42,6 +42,7 @@ public:
     bool moveToLeft();              //向左移动
     bool moveToRight();             //向右移动
     bool moveToBottom();            //向下移动
+    bool moveToUp();
     bool moveToEnd();               //移至底部
     bool isEnd();                   //判断是否结束
     void killLines();               //消去整行

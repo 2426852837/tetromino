@@ -36,6 +36,10 @@ class Cusgame : public QMainWindow
 public:
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
     void keyReleaseEvent(QKeyEvent *e);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void wheelEvent(QWheelEvent *e);
     void changeEvent(QEvent *event);        //窗口最小化后暂停
     void closeEvent(QCloseEvent *event);
     void updateScore();                     //更新分数的数据和显示
@@ -75,7 +79,9 @@ private:
     QLabel *scoreLabel;             //分数标签（用来显示分数）
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
-
+    QPoint start;
+    QPoint movement;
+    QPoint end;
 };
 
 #endif // CUSGAME_H
