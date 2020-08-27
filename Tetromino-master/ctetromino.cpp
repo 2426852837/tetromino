@@ -1,4 +1,5 @@
 #include "ctetromino.h"
+#include "form.h"
 
 CTetromino::CTetromino()
 {
@@ -280,8 +281,19 @@ int CTetromino::getNextHeight()
 void CTetromino::createNextBlock()
 {
     int centerX = (MAXX - 1) / 2;   //中心x坐标
-    int ID = rand() % 7;            //获得0 - 6的随机数
-    //根据不同的随机数创建方块
+    int ID = 0;
+    qDebug()<<isCus;
+    if(isCus == true)
+    {
+
+    }
+    else
+    {
+
+        ID = rand() % 7;            //获得0 - 6的随机数
+        //根据不同的随机数创建方块
+    }
+
     switch (ID)
     {
     case 0:

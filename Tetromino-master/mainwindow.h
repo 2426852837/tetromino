@@ -19,8 +19,6 @@ class Dialog;
 class mymain;
 QT_END_NAMESPACE
 
-extern bool isCus;
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -40,8 +38,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Form myform;
-    Dialog quit;
-    mymain mymain;
+    Form *myform;
+    Dialog *quit;
+    Mymain *mymain;
 };
 #endif // MAINWINDOW_H

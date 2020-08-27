@@ -1,5 +1,5 @@
-#ifndef MYMAIN_H
-#define MYMAIN_H
+#ifndef Mymain_H
+#define Mymain_H
 
 #include <QMainWindow>
 #include <QPainter>
@@ -26,12 +26,12 @@
 #define STATUS_OFF 2    //游戏未开始
 #define STATUS_END 3    //游戏结束
 
-class mymain : public QMainWindow
+class Mymain : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit mymain(QWidget *parent = nullptr);
-    ~mymain();
+    explicit Mymain(QWidget *parent = nullptr);
+    ~Mymain();
     void keyPressEvent(QKeyEvent *event);   //响应键盘事件
     void keyReleaseEvent(QKeyEvent *e);
     void changeEvent(QEvent *event);        //窗口最小化后暂停
@@ -73,4 +73,4 @@ private:
 
 };
 
-#endif // MYMAIN_H
+#endif // Mymain_H

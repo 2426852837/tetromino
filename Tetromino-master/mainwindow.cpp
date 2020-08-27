@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     pal.setBrush(QPalette::Window,QBrush(pixmap));
     setPalette(pal);
     setAutoFillBackground(true);
-    isCus = false;
 }
 
 
@@ -29,18 +28,20 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_pushButton_3_clicked()
 {
-    quit.show();
+    quit = new Dialog(this);
+    quit->setModal(false);
+    quit->show();
 }
 
 void MainWindow::on_pushButton_2_clicked()
 {
-    myform.show();
-    this->showMinimized();
+    myform = new Form();
+    myform->show();
 }
 
 
 void MainWindow::on_pushButton_clicked()
 {
-    mymain.show();
-    this->showMinimized();
+    mymain = new Mymain(this);
+    mymain->show();
 }

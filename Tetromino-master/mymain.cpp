@@ -4,9 +4,8 @@
 #include <QFontDatabase>
 #include "mainwindow.h"
 
-mymain::mymain(QWidget *parent) : QMainWindow(parent)
+Mymain::Mymain(QWidget *parent) : QMainWindow(parent)
 {
-
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
 
@@ -99,18 +98,18 @@ mymain::mymain(QWidget *parent) : QMainWindow(parent)
     connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
 }
 
-mymain::~mymain()
+Mymain::~Mymain()
 {
 
 }
 
-void mymain::setTimer(){
+void Mymain::setTimer(){
     timer->start(speed);
 }
 
 
 
-void mymain::keyPressEvent(QKeyEvent *event)
+void Mymain::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_D)
     {
@@ -341,7 +340,7 @@ void mymain::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void mymain::keyReleaseEvent(QKeyEvent *e)
+void Mymain::keyReleaseEvent(QKeyEvent *e)
 {
     if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
     {
@@ -354,7 +353,7 @@ void mymain::keyReleaseEvent(QKeyEvent *e)
 
 }
 
-void mymain::onrepeatTimer()
+void Mymain::onrepeatTimer()
 {
     if(key == Qt::Key_D)
     {
@@ -379,7 +378,7 @@ void mymain::onrepeatTimer()
     }
 }
 
-void mymain::onTimer()
+void Mymain::onTimer()
 {
     if(tetris.moveToBottom())
     {
@@ -402,7 +401,7 @@ void mymain::onTimer()
 }
 
 
-void mymain::updateScore()
+void Mymain::updateScore()
 {
     QString str,strDiff;
     int score = tetris.getScore();
@@ -427,7 +426,7 @@ void mymain::updateScore()
     diffLabel->setStyleSheet("QLabel{color:white;}");
 }
 
-void mymain::changeEvent(QEvent *event)
+void Mymain::changeEvent(QEvent *event)
 {
     if (event->type() != QEvent::WindowStateChange)
     {
@@ -445,7 +444,7 @@ void mymain::changeEvent(QEvent *event)
     }
 }
 
-void mymain::closeEvent(QCloseEvent *event)
+void Mymain::closeEvent(QCloseEvent *event)
 {
     if(status==STATUS_ON||status==STATUS_PAUSE)
     {

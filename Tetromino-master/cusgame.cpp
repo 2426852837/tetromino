@@ -5,7 +5,7 @@
 #include "mainwindow.h"
 #include "form.h"
 
-cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
+Cusgame::Cusgame(QWidget *parent) : QMainWindow(parent)
 {
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
@@ -100,18 +100,18 @@ cusgame::cusgame(QWidget *parent) : QMainWindow(parent)
     connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
 }
 
-cusgame::~cusgame()
+Cusgame::~Cusgame()
 {
 
 }
 
-void cusgame::setTimer(){
+void Cusgame::setTimer(){
     timer->start(custom.getspeed());
 }
 
 
 
-void cusgame::keyPressEvent(QKeyEvent *event)
+void Cusgame::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_D)
     {
@@ -350,7 +350,7 @@ void cusgame::keyPressEvent(QKeyEvent *event)
     }
 }
 
-void cusgame::keyReleaseEvent(QKeyEvent *e)
+void Cusgame::keyReleaseEvent(QKeyEvent *e)
 {
     if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
     {
@@ -363,7 +363,7 @@ void cusgame::keyReleaseEvent(QKeyEvent *e)
 
 }
 
-void cusgame::onrepeatTimer()
+void Cusgame::onrepeatTimer()
 {
     if(key == Qt::Key_D)
     {
@@ -386,7 +386,7 @@ void cusgame::onrepeatTimer()
     }
 }
 
-void cusgame::onTimer()
+void Cusgame::onTimer()
 {
     if(tetris.moveToBottom())
     {
@@ -409,7 +409,7 @@ void cusgame::onTimer()
 }
 
 
-void cusgame::updateScore()
+void Cusgame::updateScore()
 {
     QString str;
     int score = tetris.getScore();
@@ -428,7 +428,7 @@ void cusgame::updateScore()
 
 }
 
-void cusgame::changeEvent(QEvent *event)
+void Cusgame::changeEvent(QEvent *event)
 {
     if (event->type() != QEvent::WindowStateChange)
     {
@@ -446,7 +446,7 @@ void cusgame::changeEvent(QEvent *event)
     }
 }
 
-void cusgame::closeEvent(QCloseEvent *event)
+void Cusgame::closeEvent(QCloseEvent *event)
 {
     if(status==STATUS_ON||status==STATUS_PAUSE)
     {

@@ -1,6 +1,7 @@
 #include "form.h"
 #include "ui_form.h"
 allnumber custom;
+bool isCus;
 Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
@@ -11,6 +12,7 @@ Form::Form(QWidget *parent) :
     QPalette pal = this->palette();
     pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/background.jpg")));
     setPalette(pal);
+    isCus = false;
 }
 
 Form::~Form()
@@ -27,6 +29,8 @@ void Form::on_pushButton_2_clicked()
 void Form::on_pushButton_clicked()
 {
     isCus = true;
+    cusgame = new Cusgame(this);
+
     ishape=ui->ishape->text();
     jshape=ui->jshape->text();
     lshape=ui->lshape->text();
@@ -49,7 +53,7 @@ void Form::on_pushButton_clicked()
         int spe=speed.toInt();
         custom.setallnumber(ish,jsh,lsh,osh,zsh,tsh,ssh,spe);
         this->hide();
-        cusgame.show();
+        cusgame->show();
     }
     else
     {

@@ -26,10 +26,10 @@
 #define STATUS_END 3    //游戏结束
 
 namespace Ui {
-class cusgame;
+class Cusgame;
 }
 
-class cusgame : public QMainWindow
+class Cusgame : public QMainWindow
 {
     Q_OBJECT
 
@@ -40,8 +40,8 @@ public:
     void closeEvent(QCloseEvent *event);
     void updateScore();                     //更新分数的数据和显示
     void setTimer();                        //设置计时器，方便加速
-    explicit cusgame(QWidget *parent = nullptr);
-    ~cusgame();
+    explicit Cusgame(QWidget *parent = nullptr);
+    ~Cusgame();
 public slots:
     void onTimer();
 public slots:

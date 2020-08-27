@@ -11,12 +11,12 @@
 #include <QtDebug>
 #include <QIcon>
 #include "cusgame.h"
-#include "mainwindow.h"
 
 namespace Ui {
 class Form;
 class cusgame;
 }
+extern bool isCus;
 class allnumber
 {
 public:
@@ -98,7 +98,7 @@ private slots:
 
 private:
     Ui::Form *ui;
-    cusgame cusgame;
+    Cusgame *cusgame;
     QString ishape,jshape,lshape,oshape,zshape,tshape,sshape,speed;
 signals:
 
