@@ -16,7 +16,6 @@
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QFontDatabase>
-
 #include "ctetromino.h"
 #include "tetrominobox.h"
 #include "nexttetrominobox.h"

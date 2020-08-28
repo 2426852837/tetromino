@@ -1,6 +1,7 @@
 #include "cusgame.h"
 #include "ui_mainwindow.h"
 #include <QMediaPlayer>
+#include <QMediaPlaylist>
 #include <QFontDatabase>
 #include "mainwindow.h"
 #include "form.h"
@@ -85,6 +86,14 @@ Cusgame::Cusgame(QWidget *parent) : QMainWindow(parent)
     int w = (desktopWidget->width() - this->width()) / 2;
     int h = 5;
     move(w, h);
+
+    QMediaPlaylist *playlist = new QMediaPlaylist;
+    playlist->addMedia(QUrl::fromLocalFile("./sound/bgm.mp3"));
+    playlist->setCurrentIndex(0);
+    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    QMediaPlayer *sound = new QMediaPlayer;
+    sound->setMedia(playlist);
+    sound->play();
 
     key = Qt::Key_0;
     keytemp = key;

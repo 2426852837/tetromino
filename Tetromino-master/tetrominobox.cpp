@@ -1,4 +1,5 @@
 #include "tetrominobox.h"
+#include "form.h"
 
 TetrisBox::TetrisBox(QWidget *parent) : QWidget(parent)
 {
@@ -62,33 +63,66 @@ void TetrisBox::paintEvent(QPaintEvent *event)
 
     QPixmap pix;
     painter.translate(0, 0);
-    switch(block.color)
+    if(isCus == true)
     {
-    case 0:
-        pix.load(":/res/img/block_red.png");
-        break;
-    case 1:
-        pix.load(":/res/img/block_orange.png");
-        break;
-    case 2:
-        pix.load(":/res/img/block_yellow.png");
-        break;
-    case 3:
-        pix.load(":/res/img/block_green.png");
-        break;
-    case 4:
-        pix.load(":/res/img/block_blue.png");
-        break;
-    case 5:
-        pix.load(":/res/img/block_pink.png");
-        break;
-    case 6:
-        pix.load(":/res/img/block_purple.png");
-        break;
-    default:
-        pix.load(":/res/img/block_pink.png");
-        break;
+        pix.load(":/res/img/jimugu.png");
     }
+    else{
+        switch(block.color)
+        {
+        case 0:
+            pix.load(":/res/img/block_red.png");
+            break;
+        case 1:
+            pix.load(":/res/img/block_orange.png");
+            break;
+        case 2:
+            pix.load(":/res/img/block_yellow.png");
+            break;
+        case 3:
+            pix.load(":/res/img/block_green.png");
+            break;
+        case 4:
+            pix.load(":/res/img/block_blue.png");
+            break;
+        case 5:
+            pix.load(":/res/img/block_pink.png");
+            break;
+        case 6:
+            pix.load(":/res/img/block_purple.png");
+            break;
+        default:
+            pix.load(":/res/img/block_pink.png");
+            break;
+        }
+    }
+//    switch(block.color)
+//    {
+//    case 0:
+//        pix.load(":/res/img/block_red.png");
+//        break;
+//    case 1:
+//        pix.load(":/res/img/block_orange.png");
+//        break;
+//    case 2:
+//        pix.load(":/res/img/block_yellow.png");
+//        break;
+//    case 3:
+//        pix.load(":/res/img/block_green.png");
+//        break;
+//    case 4:
+//        pix.load(":/res/img/block_blue.png");
+//        break;
+//    case 5:
+//        pix.load(":/res/img/block_pink.png");
+//        break;
+//    case 6:
+//        pix.load(":/res/img/block_purple.png");
+//        break;
+//    default:
+//        pix.load(":/res/img/block_pink.png");
+//        break;
+//    }
     //绘制box中的内容
     for (int i = 0; i < MAXX; i++)
     {
