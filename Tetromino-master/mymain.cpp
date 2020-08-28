@@ -111,7 +111,7 @@ void Mymain::setTimer(){
 
 void Mymain::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_D)
+    if (event->key() == Qt::Key_D||event->key() == Qt::Key_Right)
     {
         if (status == STATUS_ON)
         {
@@ -128,7 +128,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    else if (event->key() == Qt::Key_A)
+    else if (event->key() == Qt::Key_A||event->key() == Qt::Key_Left)
     {
         if (status == STATUS_ON)
         {
@@ -146,7 +146,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    else if (event->key() == Qt::Key_S)
+    else if (event->key() == Qt::Key_S||event->key() == Qt::Key_Down)
     {
         if (status == STATUS_ON)
         {
@@ -159,7 +159,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             else
             {
                 QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
+                effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
                 effect->play();
                 timer->stop();
                 QString str;
@@ -170,7 +170,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    else if (event->key() == Qt::Key_W)
+    else if (event->key() == Qt::Key_W||event->key() == Qt::Key_Up)
     {
         if (tetris.rotate())
         {
@@ -182,28 +182,6 @@ void Mymain::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    else if (event->key() == Qt::Key_Space) {
-        if(status == STATUS_ON)
-        {
-            if(tetris.moveToEnd())
-            {
-                tetrisBox->updateTetris(tetris);
-            }
-            else
-            {
-                QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("./res/sound/so_good.mp3"));
-                effect->play();
-                timer->stop();
-                QString str;
-                str +=  QString("Game Over2!\nYour Score is: %1!").arg(tetris.getScore());
-                QMessageBox::information(this, tr("Game Over2"), str);
-                status = STATUS_END;
-                setWindowTitle(tr("Tetromino - END"));
-
-            }
-        }
-    }
 
     else if (event->key() == Qt::Key_Enter||event->key() == Qt::Key_Return)
     {
@@ -342,7 +320,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
 
 void Mymain::keyReleaseEvent(QKeyEvent *e)
 {
-    if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
+    if((key == Qt::Key_D||key == Qt::Key_A||key == Qt::Key_Right||key == Qt::Key_Left)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A||e->key() == Qt::Key_Right||e->key() == Qt::Key_Left))
     {
         repeatTimer->stop();
 
@@ -362,7 +340,6 @@ void Mymain::onrepeatTimer()
             if (tetris.moveToRight())
             {
                 tetrisBox->updateTetris(tetris);
-                qDebug("moving right");
             }
         }
     }
@@ -372,7 +349,6 @@ void Mymain::onrepeatTimer()
             if (tetris.moveToLeft())
             {
                 tetrisBox->updateTetris(tetris);
-                qDebug("moving left");
             }
         }
     }

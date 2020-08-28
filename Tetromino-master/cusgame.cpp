@@ -123,7 +123,7 @@ void Cusgame::setTimer(){
 
 void Cusgame::keyPressEvent(QKeyEvent *event)
 {
-    if (event->key() == Qt::Key_D)
+    if (event->key() == Qt::Key_D||event->key() == Qt::Key_Right)
     {
         if (status == STATUS_ON)
         {
@@ -140,7 +140,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    else if (event->key() == Qt::Key_A)
+    else if (event->key() == Qt::Key_A||event->key() == Qt::Key_Left)
     {
         if (status == STATUS_ON)
         {
@@ -158,7 +158,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    else if (event->key() == Qt::Key_S)
+    else if (event->key() == Qt::Key_S||event->key() == Qt::Key_Down)
     {
         if (status == STATUS_ON)
         {
@@ -182,7 +182,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    else if (event->key() == Qt::Key_W)
+    else if (event->key() == Qt::Key_W||event->key() == Qt::Key_Up)
     {
         if (tetris.rotate())
         {
@@ -362,7 +362,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
 
 void Cusgame::keyReleaseEvent(QKeyEvent *e)
 {
-    if((key == Qt::Key_D||key == Qt::Key_A)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A))
+    if((key == Qt::Key_D||key == Qt::Key_A||key == Qt::Key_Right||key == Qt::Key_Left)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A||e->key() == Qt::Key_Right||e->key() == Qt::Key_Left))
     {
         repeatTimer->stop();
 

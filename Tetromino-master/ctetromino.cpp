@@ -298,8 +298,6 @@ void CTetromino::createNextBlock()
     {
         int t=0;
         int len = custom.getish()+custom.getjsh()+custom.getlsh()+custom.getosh()+custom.getssh()+custom.gettsh()+custom.getzsh();
-        qDebug("len: %d",len);
-        qDebug("jsh: %d", custom.getjsh());
         int temp[7];
         temp[0] = custom.getosh();
         temp[1] = custom.getish();
@@ -313,14 +311,11 @@ void CTetromino::createNextBlock()
         {
             a[i] = 0;
         }
-        qDebug("im here");
         for(int i = 0; i < 7; i++)
         {
             for(int j=0;j<temp[i];j++)
             {
-                qDebug()<<t;
                 a[t++]=i;
-                qDebug()<<a[t];
             }
         }
         int rand1=rand() % len;
