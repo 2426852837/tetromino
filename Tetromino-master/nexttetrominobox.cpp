@@ -43,6 +43,7 @@ void NextTetrisBox::paintEvent(QPaintEvent *event)
     QPainter painter(this);
     QPixmap pix;
     painter.translate(0, 0);
+    //为不同方块随机设置颜色
     switch (nextBlock.color) {
     case 0:
         pix.load(":/res/img/block_red.png");

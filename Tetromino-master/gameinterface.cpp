@@ -31,6 +31,7 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     down_Label = new QLabel(tr("<font color = white>S/↓-DOWN</font>"));
     left_Label = new QLabel(tr("<font color = white>A/←-LEFT</font>"));
     right_Label = new QLabel(tr("<font color = white>D/→-RIGHT</font>"));
+    spaceLabel = new QLabel(tr("<font color = white>SPACE-SKIP</font>"));
     enter_controlLabel = new QLabel(tr("<font color = white>ENTER-START</font>"));
     pause_controlLabel = new QLabel(tr("<font color = white>P-PAUSE</font>"));
     restart_controlLabel = new QLabel(tr("<font color = white>R-RESTART</font>"));
@@ -70,6 +71,7 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     scoreLabel->setFont(font);
     diffLabel->setFont(font);
     diffTitleLabel->setFont(font);
+    spaceLabel->setFont(font);
 
     //设置游戏界面背景
     pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/game_bg.png")));
@@ -81,13 +83,14 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     mainLayout->setVerticalSpacing(20);
     mainLayout->setAlignment(Qt::AlignCenter);
 
-    mainLayout->addWidget(nextTetrisLabel, 10, 3);
-    mainLayout->addWidget(nextTetrisBox, 11, 3, 1, 2);
+    mainLayout->addWidget(nextTetrisLabel, 15, 3);
+    mainLayout->addWidget(nextTetrisBox, 16, 3, 1, 2);
     mainLayout->addWidget(controlLabel, 0, 0, 1, 1);
     mainLayout->addWidget(up_Label, 0, 1, 1, 1);
     mainLayout->addWidget(down_Label, 1, 1, 1, 1);
     mainLayout->addWidget(left_Label, 1, 0, 1, 1);
     mainLayout->addWidget(right_Label, 1, 2, 1, 1);
+    mainLayout->addWidget(spaceLabel, 0, 3, 1, 1);
     mainLayout->addWidget(restart_controlLabel, 0, 2, 1, 1);
     mainLayout->addWidget(enter_controlLabel, 0, 4, 1, 1);
     mainLayout->addWidget(pause_controlLabel, 1, 3, 1, 1);
@@ -125,24 +128,37 @@ GameInterface::~GameInterface()
 
 }
 
-void GameInterface::refreshScore()
+void GameInterface::refreshScore()//刷新游戏分数标签
 {
-    QString str;
-    int score = tetris.getScore();
-
-    str = QString::number(score);
-    scoreLabel->setText(str);
-
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
     QFont font("Microsoft YaHei", 15, 75);
     font.setFamily(fontFamilies.at(0));
 
+    QString str;
+    QString strDiff;
+    int score = tetris.getScore();
+    int diff = tetris.getDiff();
+    str = QString::number(score);
+    strDiff = QString::number(diff);
+    scoreLabel->setText(str);
+    if(!isCus)
+    {
+        if(score>=nextStage&&speed>=100)
+        {
+            nextStage+=100;
+            speed-=50;
+            setTimer();
+        }
+        diffLabel->setText(strDiff);
+        diffLabel->setFont(font);
+        diffLabel->setStyleSheet("QLabel{color:white;}");
+    }
     scoreLabel->setFont(font);
     scoreLabel->setStyleSheet("QLabel{color:white;}");
 }
 
-void GameInterface::setTimer()
+void GameInterface::setTimer()//设置游戏速度
 {
     if(isCus == true)
         timer->start(custom.getspeed());
@@ -151,9 +167,9 @@ void GameInterface::setTimer()
     }
 }
 
-void GameInterface::keyPressEvent(QKeyEvent *event)
+void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
 {
-    if (event->key() == Qt::Key_D||event->key() == Qt::Key_Right)
+    if (event->key() == Qt::Key_D||event->key() == Qt::Key_Right)//向右移动触发右移函数并记录按键
     {
         if (status == STATUS_ON)
         {
@@ -170,7 +186,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    else if (event->key() == Qt::Key_A||event->key() == Qt::Key_Left)
+    else if (event->key() == Qt::Key_A||event->key() == Qt::Key_Left)//向左移动触发左移函数并记录按键
     {
         if (status == STATUS_ON)
         {
@@ -188,7 +204,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    else if (event->key() == Qt::Key_S||event->key() == Qt::Key_Down)
+    else if (event->key() == Qt::Key_S||event->key() == Qt::Key_Down)//向下移动触发下移函数
     {
         if (status == STATUS_ON)
         {
@@ -219,7 +235,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
             }
         }
     }
-    else if (event->key() == Qt::Key_W||event->key() == Qt::Key_Up)
+    else if (event->key() == Qt::Key_W||event->key() == Qt::Key_Up)//向上进行旋转
     {
         if (tetris.rotate())
         {
@@ -231,7 +247,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    else if (event->key() == Qt::Key_Space) {
+    else if (event->key() == Qt::Key_Space) {                      //空格直接落底
         if(status == STATUS_ON)
         {
             if(tetris.moveToEnd())
@@ -261,7 +277,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
         }
     }
 
-    else if (event->key() == Qt::Key_Enter||event->key() == Qt::Key_Return)
+    else if (event->key() == Qt::Key_Enter||event->key() == Qt::Key_Return)//开始游戏
     {
         if (status == STATUS_PAUSE)
         {
@@ -340,9 +356,6 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
                 setWindowTitle(tr("Tetromino - PAUSE"));
             }
 
-            box1->setWindowTitle("游戏暂停");
-            box1->setText("按下enter继续游戏");
-            box1->exec();
         }
     }
 
@@ -455,6 +468,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)
                 setWindowTitle(tr("Tetromino - OFF"));
             }
             setVisible(false);
+            emit ExitWin();
         }
     }
 }
@@ -572,8 +586,8 @@ void GameInterface::closeEvent(QCloseEvent *event)
             {
                 setWindowTitle(tr("Tetromino - OFF"));
             }
-            event->accept();
             emit ExitWin();
+            event->accept();
         }
         else
         {
@@ -584,7 +598,11 @@ void GameInterface::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     }
-    emit ExitWin();
+    else
+    {
+        emit ExitWin();
+        event->accept();
+    }
 }
 
 void GameInterface::mousePressEvent(QMouseEvent *event)

@@ -32,41 +32,41 @@ class GameInterface: public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit GameInterface(QWidget *parent);
-    ~GameInterface();
-    void refreshScore();
-    void setTimer();
-    void keyPressEvent(QKeyEvent *event);
-    void keyReleaseEvent(QKeyEvent *e);
-    void changeEvent(QEvent *event);
-    void closeEvent(QCloseEvent *event);
-    void mousePressEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *e);
-    void mouseMoveEvent(QMouseEvent *e);
-    void wheelEvent(QWheelEvent *e);
+    explicit GameInterface(QWidget *parent);    //
+    ~GameInterface();                           //
+    void refreshScore();                        //
+    void setTimer();                            //
+    void keyPressEvent(QKeyEvent *event);       //
+    void keyReleaseEvent(QKeyEvent *e);         //
+    void changeEvent(QEvent *event);            //
+    void closeEvent(QCloseEvent *event);        //
+    void mousePressEvent(QMouseEvent *event);   //
+    void mouseReleaseEvent(QMouseEvent *e);     //
+    void mouseMoveEvent(QMouseEvent *e);        //
+    void wheelEvent(QWheelEvent *e);            //
 public slots:
-    void onTimer();
+    void onTimer();                             //
 public slots:
-    void onRepeatTimer();
+    void onRepeatTimer();                       //
 private:
-    int speed;
-    int nextStage;
-    Qt::Key key;
-    Qt::Key keytemp;
-    int status;
-    CTetromino tetris;
-    QTimer *timer;
-    QTimer *repeatTimer;
+    int speed;                                  //
+    int nextStage;                              //
+    Qt::Key key;                                //
+    Qt::Key keytemp;                            //
+    int status;                                 //
+    CTetromino tetris;                          //
+    QTimer *timer;                              //
+    QTimer *repeatTimer;                        //
 
-    TetrisBox *tetrisBox;
-    NextTetrisBox *nextTetrisBox;
-    QGridLayout *mainLayout;
+    TetrisBox *tetrisBox;                       //
+    NextTetrisBox *nextTetrisBox;               //
+    QGridLayout *mainLayout;                    //
 
-    QLabel *nextTetrisLabel;
-    QLabel *controlLabel;
-    QLabel *up_Label;
-    QLabel *down_Label;
-    QLabel *left_Label;
+    QLabel *nextTetrisLabel;                    //
+    QLabel *controlLabel;                       //
+    QLabel *up_Label;                           //
+    QLabel *down_Label;                         //
+    QLabel *left_Label;                         //
     QLabel *right_Label;
     QLabel *enter_controlLabel;
     QLabel *pause_controlLabel;
@@ -76,6 +76,7 @@ private:
     QLabel *scoreLabel;
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
+    QLabel *spaceLabel;
     QMessageBox *box1=new QMessageBox();
 
     QPoint start;
