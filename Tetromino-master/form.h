@@ -88,6 +88,7 @@ public:
     explicit Form(QWidget *parent = nullptr);
     bool isDigitStr(QString src);
     ~Form();
+    void closeEvent(QCloseEvent *event);
 private slots:
     void on_pushButton_2_clicked();
 
@@ -98,6 +99,8 @@ private:
     Ui::Form *ui;
     GameInterface *gi;
     QString ishape,jshape,lshape,oshape,zshape,tshape,sshape,speed;
+signals:
+    void ExitWin();
 };
 
 #endif // FORM_H

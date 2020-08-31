@@ -88,3 +88,9 @@ bool Form::isDigitStr(QString src)
         return true;
     }
 }
+
+void Form::closeEvent(QCloseEvent *event)
+{
+    emit ExitWin();
+    event->accept();
+}
