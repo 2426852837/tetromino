@@ -136,6 +136,7 @@ bool CTetromino::moveToUp()
 
 int CTetromino::getDiff()
 {
+    killLines();
     return diff;
 }
 
@@ -505,14 +506,14 @@ bool CTetromino::isRotatable()
 {
     int newX[COUNT];
     int newY[COUNT];
-    int newCenterX;
-    int newCenterY;
+    int tempX;
+    int tempY;
+    bool flag = true;
 
     if (block.ID == 0)
     {
         return false;
     }
-
     for (int i = 0; i < COUNT; i++)
     {
         int nx = block.x[i] - block.centerX;
@@ -525,7 +526,8 @@ bool CTetromino::isRotatable()
         //x坐标超出范围返回false
         if (newX[i] < 0 || newX[i] >= MAXX)
         {
-            return false;
+            flag = false;
+            break;
         }
         //y坐标在0 - MAXY 之间就对box中的状态进行判定
         //box中为1则返回false
@@ -533,16 +535,68 @@ bool CTetromino::isRotatable()
         {
             if (box[newX[i]][newY[i]] == 1)
             {
-                return false;
+                flag = false;
+                break;
             }
         }//y坐标超过最大值返回false
         else if (newY[i] >= MAXY)
         {
-            return false;
+            flag = false;
+            break;
         }
     }
-    newCenterX = block.centerX;
-    newCenterY = block.centerY;
+
+    if(!flag)
+    for(int j = 0; j < COUNT; j++)
+    {
+        tempX = block.x[j];
+        tempY = block.y[j];
+        for (int i = 0; i < COUNT; i++)
+        {
+            flag = true;
+//            int nx = block.x[i] - block.centerX;
+//            int ny = block.y[i] - block.centerY;
+            int nx = block.x[i] - tempX;
+            int ny = block.y[i] - tempY;
+//            newX[i] = nx * 0 + ny * (-1) + block.centerX;
+//            newY[i] = nx * 1 + ny * 0 + block.centerY;
+            newX[i] = nx * 0 + ny * (-1) + tempX;
+            newY[i] = nx * 1 + ny * 0 + tempY;
+
+            //对变换后的坐标进行判定
+
+            //x坐标超出范围返回false
+            if (newX[i] < 0 || newX[i] >= MAXX)
+            {
+//                return false;
+                flag = false;
+                break;
+            }
+            //y坐标在0 - MAXY 之间就对box中的状态进行判定
+            //box中为1则返回false
+            if (newY[i] >=0 && newY[i] < MAXY)
+            {
+                if (box[newX[i]][newY[i]] == 1)
+                {
+//                    return false;
+                    flag = false;
+                    break;
+                }
+            }//y坐标超过最大值返回false
+            else if (newY[i] >= MAXY)
+            {
+//                return false;
+                flag = false;
+                break;
+            }
+        }
+        if(flag)
+        {
+            break;
+        }
+    }
+    if(!flag)
+        return false;
 
     //满足条件后进行block的赋值
     for (int i = 0; i < COUNT; i++)
@@ -550,8 +604,29 @@ bool CTetromino::isRotatable()
         block.x[i] = newX[i];
         block.y[i] = newY[i];
     }
-    block.centerX = newCenterX;
-    block.centerY = newCenterY;
+    switch (block.ID)
+    {
+    case 1:
+        if(block.centerY>block.y[2])
+            move(0,block.centerY-block.y[2]);
+        else if(block.centerY<block.y[2])
+            move(0,block.centerY-block.y[2]);
+        block.centerX = block.x[1];
+        block.centerY = block.y[1];
+        break;
+    case 3:
+        block.centerX = block.x[0];
+        block.centerY = block.y[0];
+        break;
+    default:
+        if(block.centerY>block.y[2])
+            moveToBottom();
+        else if(block.centerY<block.y[2])
+            moveToUp();
+        block.centerX = block.x[2];
+        block.centerY = block.y[2];
+        break;
+    }
 
     return true;
 }

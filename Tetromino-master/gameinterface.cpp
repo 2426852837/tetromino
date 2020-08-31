@@ -385,6 +385,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
                 nextTetrisBox->updateNextTetris(tetris);
                 refreshScore();
                 status = STATUS_OFF;
+                speed = 500;
                 if(isCus == true)
                 {
                     setWindowTitle(tr("Custom mode Tetromino - OFF"));
@@ -401,6 +402,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
             refreshScore();
+            speed = 500;
             status = STATUS_OFF;
             if(isCus == true)
             {
