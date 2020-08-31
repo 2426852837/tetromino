@@ -40,6 +40,10 @@ public:
     void keyReleaseEvent(QKeyEvent *e);
     void changeEvent(QEvent *event);
     void closeEvent(QCloseEvent *event);
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
+    void wheelEvent(QWheelEvent *e);
 public slots:
     void onTimer();
 public slots:
@@ -73,6 +77,10 @@ private:
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
     QMessageBox *box1=new QMessageBox();
+
+    QPoint start;
+    QPoint movement;
+    QPoint end;
 };
 
 #endif // GAMEINTERFACE_H

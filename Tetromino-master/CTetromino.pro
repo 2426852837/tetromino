@@ -18,7 +18,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     ctetromino.cpp \
-    cusgame.cpp \
     form.cpp \
     gameinterface.cpp \
     main.cpp \
@@ -29,7 +28,6 @@ SOURCES += \
 
 HEADERS += \
     ctetromino.h \
-    cusgame.h \
     form.h \
     gameinterface.h \
     mainwindow.h \
