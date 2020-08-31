@@ -89,8 +89,9 @@ Cusgame::Cusgame(QWidget *parent) : QMainWindow(parent)
 
     QMediaPlaylist *playlist = new QMediaPlaylist;
     playlist->addMedia(QUrl::fromLocalFile("./sound/bgm.mp3"));
+    playlist->addMedia(QUrl::fromLocalFile("./sound/bgm2.mp3"));
     playlist->setCurrentIndex(0);
-    playlist->setPlaybackMode(QMediaPlaylist::CurrentItemInLoop);
+    playlist->setPlaybackMode(QMediaPlaylist::Loop);
     QMediaPlayer *sound = new QMediaPlayer;
     sound->setMedia(playlist);
     sound->play();
@@ -204,7 +205,7 @@ void Cusgame::keyPressEvent(QKeyEvent *event)
             else
             {
                 QMediaPlayer *effect = new QMediaPlayer;
-                effect->setMedia(QUrl::fromLocalFile("./sound/so_good.mp3"));
+                effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
                 effect->play();
                 timer->stop();
                 QString str;
@@ -493,6 +494,7 @@ void Cusgame::mouseMoveEvent(QMouseEvent *e)
 
 void Cusgame::mouseReleaseEvent(QMouseEvent *e)
 {
+    if(status == STATUS_ON)
     timer->start(custom.getspeed());
 }
 

@@ -182,6 +182,28 @@ void Mymain::keyPressEvent(QKeyEvent *event)
         }
     }
 
+    else if (event->key() == Qt::Key_Space) {
+        if(status == STATUS_ON)
+        {
+            if(tetris.moveToEnd())
+            {
+                tetrisBox->updateTetris(tetris);
+            }
+            else
+            {
+                QMediaPlayer *effect = new QMediaPlayer;
+                effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
+                effect->play();
+                timer->stop();
+                QString str;
+                str +=  QString("Game Over2!\nYour Score is: %1!").arg(tetris.getScore());
+                QMessageBox::information(this, tr("Game Over2"), str);
+                status = STATUS_END;
+                setWindowTitle(tr("Custom mode Tetromino - END"));
+
+            }
+        }
+    }
 
     else if (event->key() == Qt::Key_Enter||event->key() == Qt::Key_Return)
     {
