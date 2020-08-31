@@ -10,13 +10,12 @@
 #include <QTextStream>
 #include <QtDebug>
 #include <QIcon>
-#include "cusgame.h"
+#include "gameinterface.h"
 
 namespace Ui {
 class Form;
-class cusgame;
 }
-extern bool isCus;
+class GameInterface;
 class allnumber
 {
 public:
@@ -77,10 +76,9 @@ private:
     int tsh;
     int ssh;
     int spe;
-};
+}; 
 
 extern allnumber custom;
-
 class Form : public QWidget
 {
     Q_OBJECT
@@ -98,7 +96,7 @@ private slots:
 
 private:
     Ui::Form *ui;
-    Cusgame *cusgame;
+    GameInterface *gi;
     QString ishape,jshape,lshape,oshape,zshape,tshape,sshape,speed;
 signals:
 

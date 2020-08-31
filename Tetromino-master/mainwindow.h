@@ -5,7 +5,7 @@
 
 #include "quitdialog.h"
 #include "form.h"
-#include "mymain.h"
+#include "gameinterface.h"
 
 #define STATUS_ON 0     //游戏正常进行
 #define STATUS_PAUSE 1  //游戏暂停
@@ -16,8 +16,10 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 class Form;
 class Dialog;
-class mymain;
+class GameInterface;
 QT_END_NAMESPACE
+
+extern bool isCus;
 
 class MainWindow : public QMainWindow
 {
@@ -40,6 +42,6 @@ private:
     Ui::MainWindow *ui;
     Form *myform;
     Dialog *quit;
-    Mymain *mymain;
+    GameInterface *gi;
 };
 #endif // MAINWINDOW_H

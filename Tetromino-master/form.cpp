@@ -1,7 +1,8 @@
 #include "form.h"
 #include "ui_form.h"
+#include "mainwindow.h"
+
 allnumber custom;
-bool isCus;
 Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
@@ -58,10 +59,9 @@ void Form::on_pushButton_clicked()
             return;
         }
         custom.setallnumber(ish,jsh,lsh,osh,zsh,tsh,ssh,spe);
-
-        cusgame = new Cusgame(this);
+        gi = new GameInterface(this);
         this->hide();
-        cusgame->show();
+        gi->show();
     }
     else
     {

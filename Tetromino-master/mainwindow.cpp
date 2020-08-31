@@ -4,6 +4,8 @@
 #include "ui_quitdialog.h"
 #include <QDialog>
 #include "form.h"
+
+bool isCus;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -42,6 +44,7 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
-    mymain = new Mymain(this);
-    mymain->show();
+    isCus = false;
+    gi = new GameInterface(this);
+    gi->show();
 }

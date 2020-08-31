@@ -63,11 +63,7 @@ void TetrisBox::paintEvent(QPaintEvent *event)
 
     QPixmap pix;
     painter.translate(0, 0);
-    if(isCus == true)
-    {
-        pix.load(":/res/img/jimugu.png");
-    }
-    else{
+
         switch(block.color)
         {
         case 0:
@@ -95,7 +91,7 @@ void TetrisBox::paintEvent(QPaintEvent *event)
             pix.load(":/res/img/block_pink.png");
             break;
         }
-    }
+
 //    switch(block.color)
 //    {
 //    case 0:

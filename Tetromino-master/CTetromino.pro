@@ -20,9 +20,9 @@ SOURCES += \
     ctetromino.cpp \
     cusgame.cpp \
     form.cpp \
+    gameinterface.cpp \
     main.cpp \
     mainwindow.cpp \
-    mymain.cpp \
     nexttetrominobox.cpp \
     quitdialog.cpp \
     tetrominobox.cpp
@@ -31,8 +31,8 @@ HEADERS += \
     ctetromino.h \
     cusgame.h \
     form.h \
+    gameinterface.h \
     mainwindow.h \
-    mymain.h \
     nexttetrominobox.h \
     quitdialog.h \
     tetrominobox.h

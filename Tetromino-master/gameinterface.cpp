@@ -1,115 +1,157 @@
-#include "mymain.h"
-#include "ui_mainwindow.h"
-#include <QMediaPlayer>
-#include <QFontDatabase>
+#include "gameinterface.h"
 #include "mainwindow.h"
 
-Mymain::Mymain(QWidget *parent) : QMainWindow(parent)
+GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
 {
+    //声明与赋予初始值
+    QDesktopWidget *desktopWidget = QApplication::desktop();
+    int width = (desktopWidget->width() - this->width()) / 2;
+    int height = 5;
+    QPalette pal = this->palette();
     int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
     QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+    QFont font("Microsoft YaHei", 15, 75);
+    QWidget *widget = new QWidget(this);
 
+    status = STATUS_OFF;
+    nextStage = 100;
+    speed = 500;
+    key = Qt::Key_0;
+    keytemp = key;
+    mainLayout = new QGridLayout;
+
+    //实例化部分
+
+    //界面组件实例化
     tetrisBox = new TetrisBox;
     nextTetrisBox = new NextTetrisBox;
     nextTetrisLabel = new QLabel(tr("<font color = white>NEXT：</font>"));
     controlLabel = new QLabel(tr("<font color = white>CONTROL：</font>"));
-    w_controlLabel = new QLabel(tr("<font color = white>W-ROTATE</font>"));
-    s_controlLabel = new QLabel(tr("<font color = white>S-DOWN</font>"));
-    a_controlLabel = new QLabel(tr("<font color = white>A-UP</font>"));
-    d_controlLabel = new QLabel(tr("<font color = white>D-RIGHT</font>"));
+    up_Label = new QLabel(tr("<font color = white>W/↑-ROTATE</font>"));
+    down_Label = new QLabel(tr("<font color = white>S/↓-DOWN</font>"));
+    left_Label = new QLabel(tr("<font color = white>A/←-LEFT</font>"));
+    right_Label = new QLabel(tr("<font color = white>D/→-RIGHT</font>"));
     enter_controlLabel = new QLabel(tr("<font color = white>ENTER-START</font>"));
-    p_controlLabel = new QLabel(tr("<font color = white>P-PAUSE</font>"));
-    r_controlLabel = new QLabel(tr("<font color = white>R-RESTART</font>"));
-    esc_controlLabel = new QLabel(tr("<font color = white>ESC-END</font>"));
-    spaceLabel = new QLabel(tr("<font color = white>Space-SKIP</font>"));
+    pause_controlLabel = new QLabel(tr("<font color = white>P-PAUSE</font>"));
+    restart_controlLabel = new QLabel(tr("<font color = white>R-RESTART</font>"));
+    exit_controlLabel = new QLabel(tr("<font color = white>ESC-EXIT</font>"));
     scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
     scoreLabel = new QLabel(tr("<font color = white>0</font>"));
-    diffTitleLabel = new QLabel(tr("<font color = white>DIFFICULTY:</font>"));
-    diffLabel = new QLabel(tr("<font color = white>0</font>"));
-    QFont font("Microsoft YaHei", 15, 75);
+    if(isCus == true)
+    {
+        diffTitleLabel = new QLabel(tr("<font color = white>SPEED:</font>"));
+        diffLabel = new QLabel(tr("<font color = white></font>"));
+    }
+    else
+    {
+        diffTitleLabel = new QLabel(tr("<font color = white>DIFFICULTY:</font>"));
+        diffLabel = new QLabel(tr("<font color = white>0</font>"));
+    }
+    //计时器实例化
+    timer = new QTimer(this);
+    repeatTimer = new QTimer(this);
+    //实例化部分结束
+
+    //字体导入
     font.setFamily(fontFamilies.at(0));
 
+    //为文字标签设置字体
     nextTetrisLabel->setFont(font);
     controlLabel->setFont(font);
-    w_controlLabel->setFont(font);
-    s_controlLabel->setFont(font);
-    a_controlLabel->setFont(font);
-    d_controlLabel->setFont(font);
+    up_Label->setFont(font);
+    down_Label->setFont(font);
+    left_Label->setFont(font);
+    right_Label->setFont(font);
     enter_controlLabel->setFont(font);
-    p_controlLabel->setFont(font);
-    r_controlLabel->setFont(font);
-    esc_controlLabel->setFont(font);
-    spaceLabel->setFont(font);
+    pause_controlLabel->setFont(font);
+    restart_controlLabel->setFont(font);
+    exit_controlLabel->setFont(font);
     scoreTitleLabel->setFont(font);
     scoreLabel->setFont(font);
     diffLabel->setFont(font);
     diffTitleLabel->setFont(font);
 
+    //设置游戏界面背景
+    pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/game_bg.png")));
+    setPalette(pal);
 
-
+    //设置布局
     mainLayout = new QGridLayout;
     mainLayout->setHorizontalSpacing(15);
     mainLayout->setVerticalSpacing(20);
     mainLayout->setAlignment(Qt::AlignCenter);
 
-    mainLayout->addWidget(nextTetrisLabel, 6, 3);
-    mainLayout->addWidget(nextTetrisBox, 7, 3, 1, 2);
+    mainLayout->addWidget(nextTetrisLabel, 10, 3);
+    mainLayout->addWidget(nextTetrisBox, 11, 3, 1, 2);
     mainLayout->addWidget(controlLabel, 0, 0, 1, 1);
-    mainLayout->addWidget(w_controlLabel, 0, 1, 1, 1);
-    mainLayout->addWidget(s_controlLabel, 1, 1, 1, 1);
-    mainLayout->addWidget(a_controlLabel, 1, 0, 1, 1);
-    mainLayout->addWidget(d_controlLabel, 1, 2, 1, 1);
-    mainLayout->addWidget(r_controlLabel, 0, 2, 1, 1);
-    mainLayout->addWidget(spaceLabel, 0, 3, 1, 1);
+    mainLayout->addWidget(up_Label, 0, 1, 1, 1);
+    mainLayout->addWidget(down_Label, 1, 1, 1, 1);
+    mainLayout->addWidget(left_Label, 1, 0, 1, 1);
+    mainLayout->addWidget(right_Label, 1, 2, 1, 1);
+    mainLayout->addWidget(restart_controlLabel, 0, 2, 1, 1);
     mainLayout->addWidget(enter_controlLabel, 0, 4, 1, 1);
-    mainLayout->addWidget(p_controlLabel, 1, 3, 1, 1);
-    mainLayout->addWidget(esc_controlLabel, 1, 4, 1, 1);
+    mainLayout->addWidget(pause_controlLabel, 1, 3, 1, 1);
+    mainLayout->addWidget(exit_controlLabel, 1, 4, 1, 1);
     mainLayout->addWidget(tetrisBox, 3, 1, 14, 2);
-    mainLayout->addWidget(scoreTitleLabel, 12, 3);
-    mainLayout->addWidget(scoreLabel, 12, 4);
-    mainLayout->addWidget(diffTitleLabel, 13,3);
-    mainLayout->addWidget(diffLabel, 13, 4);
-
-    QWidget *widget = new QWidget(this);
+    mainLayout->addWidget(scoreTitleLabel, 7, 3);
+    mainLayout->addWidget(scoreLabel, 7, 4);
+    mainLayout->addWidget(diffTitleLabel, 8,3);
+    mainLayout->addWidget(diffLabel, 8, 4);
     widget->setLayout(mainLayout);
     setCentralWidget(widget);
     setWindowIcon(QIcon(":/res/img/title.png"));
 
-    QPalette pal = this->palette();
-    pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/game_bg.png")));
-    setPalette(pal);
+    //设置起始位置
+    move(width, height);
 
-    QDesktopWidget *desktopWidget = QApplication::desktop();
-    int w = (desktopWidget->width() - this->width()) / 2;
-    int h = 5;
-    move(w, h);
-
-    nextStage = 100;
-    speed = 100;
-    key = Qt::Key_0;
-    keytemp = key;
-
-    status = STATUS_OFF;
+    //初始化
     nextTetrisBox->updateNextTetris(tetris);
-    setWindowTitle(tr("Tetromino - OFF"));
-    timer = new QTimer(this);
-    repeatTimer = new QTimer(this);
+    if(isCus == true)
+    {
+        setWindowTitle(tr("Custom mode Tetromino - OFF"));
+    }
+    else
+    {
+        setWindowTitle(tr("Tetromino - OFF"));
+    }
+
+    //链接计时器
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
-    connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onrepeatTimer()));
+    connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onRepeatTimer()));
 }
 
-Mymain::~Mymain()
+GameInterface::~GameInterface()
 {
 
 }
 
-void Mymain::setTimer(){
-    timer->start(speed);
+void GameInterface::refreshScore()
+{
+    QString str;
+    int score = tetris.getScore();
+
+    str = QString::number(score);
+    scoreLabel->setText(str);
+
+    int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
+    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+    QFont font("Microsoft YaHei", 15, 75);
+    font.setFamily(fontFamilies.at(0));
+
+    scoreLabel->setFont(font);
+    scoreLabel->setStyleSheet("QLabel{color:white;}");
 }
 
+void GameInterface::setTimer()
+{
+    if(isCus == true)
+        timer->start(custom.getspeed());
+    else {
+        timer->start(speed);
+    }
+}
 
-
-void Mymain::keyPressEvent(QKeyEvent *event)
+void GameInterface::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_D||event->key() == Qt::Key_Right)
     {
@@ -154,7 +196,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             {
                 tetrisBox->updateTetris(tetris);
                 nextTetrisBox->updateNextTetris(tetris);
-                updateScore();
+                refreshScore();
             }
             else
             {
@@ -166,7 +208,14 @@ void Mymain::keyPressEvent(QKeyEvent *event)
                 str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
                 QMessageBox::information(this, tr("Game Over1"), str);
                 status = STATUS_END;
-                setWindowTitle(tr("Tetromino - END"));
+                if(isCus == true)
+                {
+                    setWindowTitle(tr("Custom mode Tetromino - END"));
+                }
+                else
+                {
+                    setWindowTitle(tr("Tetromino - END"));
+                }
             }
         }
     }
@@ -196,10 +245,17 @@ void Mymain::keyPressEvent(QKeyEvent *event)
                 effect->play();
                 timer->stop();
                 QString str;
-                str +=  QString("Game Over2!\nYour Score is: %1!").arg(tetris.getScore());
+                str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris.getScore());
                 QMessageBox::information(this, tr("Game Over2"), str);
                 status = STATUS_END;
-                setWindowTitle(tr("Custom mode Tetromino - END"));
+                if(isCus == true)
+                {
+                    setWindowTitle(tr("Custom mode Tetromino - END"));
+                }
+                else
+                {
+                    setWindowTitle(tr("Tetromino - END"));
+                }
 
             }
         }
@@ -209,34 +265,64 @@ void Mymain::keyPressEvent(QKeyEvent *event)
     {
         if (status == STATUS_PAUSE)
         {
-            timer->start(speed);
+            setTimer();
             status = STATUS_ON;
-            setWindowTitle(tr("Game_Tetris - ON"));
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - ON"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - ON"));
+            }
         }
         else if (status == STATUS_OFF)
         {
             tetris.createBlock();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
-            updateScore();
-            speed = 500;
-            nextStage = 100;
+            refreshScore();
+            if(isCus == true)
+            {
+                QString strspeed=QString::number(custom.getspeed());
+                int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
+                QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
+                QFont font("Microsoft YaHei", 15, 75);
+                font.setFamily(fontFamilies.at(0));
+                diffLabel->setFont(font);
+                diffLabel->setStyleSheet("QLabel{color:white;}");
+                diffLabel->setText(strspeed);
+                mainLayout->addWidget(diffLabel, 8, 4);
+            }
+
             status = STATUS_ON;
-            setWindowTitle(tr("Game_Tetris - ON"));
-            timer->start(speed);
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - ON"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - ON"));
+            }
+            setTimer();
         }
         else if (status == STATUS_END)
         {
             tetris.clear();
             tetris.createBlock();
-            speed = 500;
-            nextStage = 100;
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
-            updateScore();
+            refreshScore();
             status = STATUS_ON;
-            setWindowTitle(tr("Game_Tetris - ON"));
-            timer->start(speed);
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - ON"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - ON"));
+            }
+            setTimer();
         }
     }
     else if (event->key() == Qt::Key_P)
@@ -245,7 +331,14 @@ void Mymain::keyPressEvent(QKeyEvent *event)
         {
             timer->stop();
             status = STATUS_PAUSE;
-            setWindowTitle(tr("Tetromino - PAUSE"));
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - PAUSE"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - PAUSE"));
+            }
 
             box1->setWindowTitle("游戏暂停");
             box1->setText("按下enter继续游戏");
@@ -267,7 +360,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             {
                 if(status==STATUS_ON)
                 {
-                    timer->start(speed);
+                    setTimer();
                     return;
                 }
 
@@ -277,9 +370,16 @@ void Mymain::keyPressEvent(QKeyEvent *event)
                 tetris.clear();
                 tetrisBox->updateTetris(tetris);
                 nextTetrisBox->updateNextTetris(tetris);
-                updateScore();
+                refreshScore();
                 status = STATUS_OFF;
-                setWindowTitle(tr("Tetromino - OFF"));
+                if(isCus == true)
+                {
+                    setWindowTitle(tr("Custom mode Tetromino - OFF"));
+                }
+                else
+                {
+                    setWindowTitle(tr("Tetromino - OFF"));
+                }
             }
         }
         else
@@ -287,12 +387,17 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             tetris.clear();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
-            updateScore();
+            refreshScore();
             status = STATUS_OFF;
-            setWindowTitle(tr("Tetromino - OFF"));
-
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - OFF"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - OFF"));
+            }
         }
-
     }
 
     else if (event->key() == Qt::Key_Escape)
@@ -307,7 +412,7 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             {
                 if(status==STATUS_ON)
                 {
-                    timer->start(speed);
+                    setTimer();
                     return;
                 }
             }
@@ -318,8 +423,15 @@ void Mymain::keyPressEvent(QKeyEvent *event)
                 tetris.clear();
                 tetrisBox->updateTetris(tetris);
                 nextTetrisBox->updateNextTetris(tetris);
-                updateScore();
-                setWindowTitle(tr("Tetromino - OFF"));
+                refreshScore();
+                if(isCus == true)
+                {
+                    setWindowTitle(tr("Custom mode Tetromino - OFF"));
+                }
+                else
+                {
+                    setWindowTitle(tr("Tetromino - OFF"));
+                }
 
             }
 
@@ -333,14 +445,21 @@ void Mymain::keyPressEvent(QKeyEvent *event)
             tetris.clear();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
-            updateScore();
-            setWindowTitle(tr("Tetromino - OFF"));
+            refreshScore();
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - OFF"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - OFF"));
+            }
             setVisible(false);
         }
     }
 }
 
-void Mymain::keyReleaseEvent(QKeyEvent *e)
+void GameInterface::keyReleaseEvent(QKeyEvent *e)
 {
     if((key == Qt::Key_D||key == Qt::Key_A||key == Qt::Key_Right||key == Qt::Key_Left)&&(e->key() == Qt::Key_D||e->key() == Qt::Key_A||e->key() == Qt::Key_Right||e->key() == Qt::Key_Left))
     {
@@ -350,10 +469,38 @@ void Mymain::keyReleaseEvent(QKeyEvent *e)
         keytemp = Qt::Key_0;
 
     }
-
 }
 
-void Mymain::onrepeatTimer()
+void GameInterface::onTimer()
+{
+    if(tetris.moveToBottom())
+    {
+        tetrisBox->updateTetris(tetris);
+        nextTetrisBox->updateNextTetris(tetris);
+        refreshScore();
+    }
+    else
+    {
+        timer->stop();
+        QString str;
+        str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris.getScore());
+        QMessageBox::information(this, tr("Game Over"), str);
+        status = STATUS_END;
+        if(isCus == true)
+        {
+            setWindowTitle(tr("Custom mode Tetromino - END"));
+        }
+        else
+        {
+            setWindowTitle(tr("Tetromino - END"));
+        }
+        QMediaPlayer *effect = new QMediaPlayer;
+        effect->setMedia(QUrl::fromLocalFile("./sound/game_over.mp3"));
+        effect->play();
+    }
+}
+
+void GameInterface::onRepeatTimer()
 {
     if(key == Qt::Key_D)
     {
@@ -376,55 +523,7 @@ void Mymain::onrepeatTimer()
     }
 }
 
-void Mymain::onTimer()
-{
-    if(tetris.moveToBottom())
-    {
-        tetrisBox->updateTetris(tetris);
-        nextTetrisBox->updateNextTetris(tetris);
-        updateScore();
-    }
-    else
-    {
-        timer->stop();
-        QString str;
-        str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris.getScore());
-        QMessageBox::information(this, tr("Game Over"), str);
-        status = STATUS_END;
-        setWindowTitle(tr("Tetromino - END"));
-        QMediaPlayer *effect = new QMediaPlayer;
-        effect->setMedia(QUrl::fromLocalFile("./res/sound/game_over.mp3"));
-        effect->play();
-    }
-}
-
-
-void Mymain::updateScore()
-{
-    QString str,strDiff;
-    int score = tetris.getScore();
-    int diff = tetris.getDiff();
-    str += QString("%1").arg(score);
-    strDiff += QString("%1").arg(diff);
-    scoreLabel->setText(str);
-    if(score>=nextStage&&speed>=100){
-        nextStage+=100;
-        speed-=50;
-        setTimer();
-    }
-    int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
-    QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-    scoreLabel->setText(str);
-    diffLabel->setText(strDiff);
-    QFont font("Microsoft YaHei", 15, 75);
-    font.setFamily(fontFamilies.at(0));
-    scoreLabel->setFont(font);
-    scoreLabel->setStyleSheet("QLabel{color:white;}");
-    diffLabel->setFont(font);
-    diffLabel->setStyleSheet("QLabel{color:white;}");
-}
-
-void Mymain::changeEvent(QEvent *event)
+void GameInterface::changeEvent(QEvent *event)
 {
     if (event->type() != QEvent::WindowStateChange)
     {
@@ -436,13 +535,20 @@ void Mymain::changeEvent(QEvent *event)
         {
             timer->stop();
             status=STATUS_PAUSE;
-            setWindowTitle("Tetromino - PAUSE");
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - PAUSE"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - PAUSE"));
+            }
         }
 
     }
 }
 
-void Mymain::closeEvent(QCloseEvent *event)
+void GameInterface::closeEvent(QCloseEvent *event)
 {
     if(status==STATUS_ON||status==STATUS_PAUSE)
     {
@@ -456,9 +562,16 @@ void Mymain::closeEvent(QCloseEvent *event)
             tetris.clear();
             tetrisBox->updateTetris(tetris);
             nextTetrisBox->updateNextTetris(tetris);
-            updateScore();
+            refreshScore();
             status = STATUS_OFF;
-            setWindowTitle(tr("Tetromino - OFF"));
+            if(isCus == true)
+            {
+                setWindowTitle(tr("Custom mode Tetromino - OFF"));
+            }
+            else
+            {
+                setWindowTitle(tr("Tetromino - OFF"));
+            }
             event->accept();
         }
         else
@@ -471,3 +584,4 @@ void Mymain::closeEvent(QCloseEvent *event)
         }
     }
 }
+
