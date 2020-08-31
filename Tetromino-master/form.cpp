@@ -26,7 +26,8 @@ Form::~Form()
 
 void Form::on_pushButton_2_clicked()
 {
-    this->hide();
+    this->close();
+    emit ExitWin();
 }
 
 void Form::on_pushButton_clicked()

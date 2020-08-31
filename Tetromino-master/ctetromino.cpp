@@ -427,8 +427,8 @@ void CTetromino::createNextBlock()
         nextBlock.color = rand()%7;
         break;
     case 6:
-        // #
-        //###
+        // *
+        //***
         nextBlock.x[0] = centerX;
         nextBlock.x[1] = centerX - 1;
         nextBlock.x[2] = centerX;
