@@ -98,8 +98,6 @@ private:
     Ui::Form *ui;
     GameInterface *gi;
     QString ishape,jshape,lshape,oshape,zshape,tshape,sshape,speed;
-signals:
-
 };
 
 #endif // FORM_H

@@ -81,6 +81,8 @@ private:
     QPoint start;
     QPoint movement;
     QPoint end;
+signals:
+    void ExitWin();
 };
 
 #endif // GAMEINTERFACE_H

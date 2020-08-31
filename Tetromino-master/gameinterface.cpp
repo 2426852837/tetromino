@@ -573,6 +573,7 @@ void GameInterface::closeEvent(QCloseEvent *event)
                 setWindowTitle(tr("Tetromino - OFF"));
             }
             event->accept();
+            emit ExitWin();
         }
         else
         {
@@ -583,6 +584,7 @@ void GameInterface::closeEvent(QCloseEvent *event)
             event->ignore();
         }
     }
+    emit ExitWin();
 }
 
 void GameInterface::mousePressEvent(QMouseEvent *event)
@@ -598,7 +600,7 @@ void GameInterface::mouseReleaseEvent(QMouseEvent *e)
     if(isCus == true)
     {
         if(status == STATUS_ON)
-        timer->start(custom.getspeed());
+            timer->start(custom.getspeed());
     }
 }
 void GameInterface::mouseMoveEvent(QMouseEvent *e)
@@ -682,5 +684,6 @@ void GameInterface::wheelEvent(QWheelEvent *e)
                 repeatTimer->start(100);
             }
         }
+        e->accept();
     }
 }

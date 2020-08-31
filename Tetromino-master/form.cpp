@@ -1,8 +1,10 @@
 #include "form.h"
 #include "ui_form.h"
 #include "mainwindow.h"
+#include "gameinterface.h"
 
 allnumber custom;
+
 Form::Form(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::Form)
@@ -61,7 +63,9 @@ void Form::on_pushButton_clicked()
         custom.setallnumber(ish,jsh,lsh,osh,zsh,tsh,ssh,spe);
         gi = new GameInterface(this);
         this->hide();
+        gi->setWindowModality(Qt::ApplicationModal);
         gi->show();
+        connect(gi,SIGNAL(ExitWin()),this,SLOT(show()));
     }
     else
     {
