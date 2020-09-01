@@ -1,60 +1,73 @@
-#ifndef GAMEINTERFACE_H
-#define GAMEINTERFACE_H
+#ifndef VERSUS_H
+#define VERSUS_H
 
 #include <QMainWindow>
 #include <QLabel>
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QDesktopWidget>
+#include <QList>
 
 #include "nexttetrominobox.h"
 #include "ctetromino.h"
 #include "tetrominobox.h"
-#include "mainwindow.h"
 #include <QTimer>
 #include <QPalette>
 #include "ui_mainwindow.h"
 #include "mainwindow.h"
 #include <QFontDatabase>
-#include <QMediaPlayer>
-
+#include "gameinterface.h"
 
 #define STATUS_ON 0     //游戏正常进行
 #define STATUS_PAUSE 1  //游戏暂停
 #define STATUS_OFF 2    //游戏未开始
 #define STATUS_END 3    //游戏结束
 
+#define PLAYER_START 0
+#define PLAYER_END 1
+
 namespace Ui {
-class GameInterface;
+class versus;
 }
 
-class GameInterface: public QMainWindow
+class versus: public QMainWindow
 {
     Q_OBJECT
 public:
-    GameInterface(){}
-    GameInterface(QWidget *parent);    //
-    ~GameInterface();                           //
+    explicit versus(QWidget *parent);
+    ~versus(){}
     void refreshScore();                        //
-    void setTimer();                            //
     void keyPressEvent(QKeyEvent *event);       //
     void keyReleaseEvent(QKeyEvent *e);         //
     void changeEvent(QEvent *event);            //
     void closeEvent(QCloseEvent *event);        //
-    void mousePressEvent(QMouseEvent *event);   //
-    void mouseReleaseEvent(QMouseEvent *e);     //
-    void mouseMoveEvent(QMouseEvent *e);        //
-    void wheelEvent(QWheelEvent *e);            //
+    void gameOver();
 public slots:
     void onTimer();                             //
 public slots:
-    void onRepeatTimer();                       //
+    void onTimer4p2();
+public slots:
+    void onRepeatTimer();
 private:
+    int speed4p2;
+    int nextStage4p2;
+    CTetromino *tetris4p2;
+    QTimer *timer4p2;
+    TetrisBox *tetrisBox4p2;
+    NextTetrisBox *nextTetrisBox4p2;
+    QLabel *scoreTitleLabel4p2;
+    QLabel *scoreLabel4p2;
+    QLabel *diffTitleLabel4p2;
+    QLabel *diffLabel4p2;
+    QLabel *nextTetrisLabel4p2;
+    QList<Qt::Key> pressedKeyS;
+
     int speed;                                  //
     int nextStage;                              //
-    Qt::Key key;                                //
-    Qt::Key keytemp;                            //
     int status;                                 //
+    int play1Status;
+    int play2Status;
+
     CTetromino *tetris;                         //
     QTimer *timer;                              //
     QTimer *repeatTimer;                        //
@@ -65,6 +78,10 @@ private:
 
     QLabel *nextTetrisLabel;                    //
     QLabel *controlLabel;                       //
+    QLabel *w_Label;                           //
+    QLabel *s_Label;                         //
+    QLabel *a_Label;                         //
+    QLabel *d_Label;
     QLabel *up_Label;                           //
     QLabel *down_Label;                         //
     QLabel *left_Label;                         //
@@ -78,13 +95,10 @@ private:
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
     QLabel *spaceLabel;
+    QLabel *backspaceLabel;
     QMessageBox *box1=new QMessageBox();
-
-    QPoint start;
-    QPoint movement;
-    QPoint end;
 signals:
     void ExitWin();
 };
 
-#endif // GAMEINTERFACE_H
+#endif // VERSUS_H

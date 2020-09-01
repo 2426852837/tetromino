@@ -39,7 +39,7 @@ void MainWindow::on_pushButton_3_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     myform = new Form();
-    this->hide();
+    this->show();
     myform->setWindowModality(Qt::ApplicationModal);
     myform->show();
     connect(myform,SIGNAL(ExitWin()),this,SLOT(show()));
@@ -50,8 +50,15 @@ void MainWindow::on_pushButton_clicked()
 {
     isCus = false;
     gi = new GameInterface(this);
-    this->hide();
     gi->setWindowModality(Qt::ApplicationModal);
     gi->show();
     connect(gi,SIGNAL(ExitWin()),this,SLOT(show()));
+}
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    vs = new versus(this);
+    vs->setWindowModality(Qt::ApplicationModal);
+    vs->showMaximized();
+    connect(vs,SIGNAL(ExitWin()),this,SLOT(show()));
 }

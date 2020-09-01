@@ -31,6 +31,7 @@ public:
     QVBoxLayout *verticalLayout;
     QPushButton *pushButton;
     QPushButton *pushButton_2;
+    QPushButton *pushButton_4;
     QPushButton *pushButton_3;
     QSpacerItem *horizontalSpacer_2;
     QMenuBar *menubar;
@@ -78,6 +79,18 @@ public:
 
         verticalLayout->addWidget(pushButton_2);
 
+        pushButton_4 = new QPushButton(centralwidget);
+        pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
+        QFont font2;
+        font2.setFamily(QString::fromUtf8("Agency FB"));
+        font2.setPointSize(36);
+        font2.setBold(true);
+        font2.setWeight(75);
+        pushButton_4->setFont(font2);
+        pushButton_4->setStyleSheet(QString::fromUtf8("QPushButton { background-color: rgb(255, 255, 255);border:0px solid ; color: rgb(0, 0, 0); } QPushButton:hover { color: rgb(245, 69, 234); }"));
+
+        verticalLayout->addWidget(pushButton_4);
+
         pushButton_3 = new QPushButton(centralwidget);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         pushButton_3->setFont(font1);
@@ -111,6 +124,7 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         pushButton->setText(QApplication::translate("MainWindow", "\345\274\200\345\247\213\346\270\270\346\210\217", nullptr));
         pushButton_2->setText(QApplication::translate("MainWindow", "\350\207\252\345\256\232\346\250\241\345\274\217", nullptr));
+        pushButton_4->setText(QApplication::translate("MainWindow", "\345\257\271\346\210\230\346\250\241\345\274\217", nullptr));
         pushButton_3->setText(QApplication::translate("MainWindow", "\351\200\200\345\207\272", nullptr));
     } // retranslateUi
 

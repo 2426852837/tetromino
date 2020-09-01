@@ -6,6 +6,7 @@
 #include "quitdialog.h"
 #include "form.h"
 #include "gameinterface.h"
+#include "versus.h"
 
 #define STATUS_ON 0     //游戏正常进行
 #define STATUS_PAUSE 1  //游戏暂停
@@ -17,6 +18,7 @@ namespace Ui { class MainWindow; }
 class Form;
 class Dialog;
 class GameInterface;
+class versus;
 QT_END_NAMESPACE
 
 extern bool isCus;
@@ -38,10 +40,14 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_pushButton_4_clicked();
+
 private:
     Ui::MainWindow *ui;
     Form *myform;
     Dialog *quit;
     GameInterface *gi;
+    versus *vs;
+
 };
 #endif // MAINWINDOW_H
