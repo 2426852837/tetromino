@@ -56,6 +56,55 @@ void TetrisBox::paintEvent(QPaintEvent *event)
     QPixmap pix;
     painter.translate(0, 0);
 
+
+
+    //绘制box中的内容
+    for (int i = 0; i < MAXX; i++)
+    {
+        for (int j = 0; j < MAXY; j++)
+        {
+            if (box[i][j] != 0)
+            {
+                int x = i * WIDTH + i * INTERVAL;
+                int y = j * HEIGHT + j * INTERVAL;
+                switch(box[i][j])
+                {
+                case 1:
+                    pix.load(":/res/img/block_red.png");
+                    break;
+                case 2:
+                    pix.load(":/res/img/block_orange.png");
+                    break;
+                case 3:
+                    pix.load(":/res/img/block_yellow.png");
+                    break;
+                case 4:
+                    pix.load(":/res/img/block_green.png");
+                    break;
+                case 5:
+                    pix.load(":/res/img/block_blue.png");
+                    break;
+                case 6:
+                    pix.load(":/res/img/block_pink.png");
+                    break;
+                case 7:
+                    pix.load(":/res/img/block_purple.png");
+                    break;
+                default:
+                    pix.load(":/res/img/block_pink.png");
+                    break;
+                }
+                painter.drawPixmap(x + 7, y + 8, WIDTH, HEIGHT, pix);
+            }
+        }
+    }
+    //绘制block中的内容
+    for (int i = 0; i < COUNT; i++)
+    {
+        int x = block.x[i];
+        int y = block.y[i];
+        int x1 = x * WIDTH + x * INTERVAL;
+        int y1 = y * HEIGHT + y * INTERVAL;
         switch(block.color)
         {
         case 0:
@@ -83,28 +132,6 @@ void TetrisBox::paintEvent(QPaintEvent *event)
             pix.load(":/res/img/block_pink.png");
             break;
         }
-
-    //绘制box中的内容
-    for (int i = 0; i < MAXX; i++)
-    {
-        for (int j = 0; j < MAXY; j++)
-        {
-            if (box[i][j] == 1)
-            {
-                int x = i * WIDTH + i * INTERVAL;
-                int y = j * HEIGHT + j * INTERVAL;
-
-                painter.drawPixmap(x + 7, y + 8, WIDTH, HEIGHT, pix);
-            }
-        }
-    }
-    //绘制block中的内容
-    for (int i = 0; i < COUNT; i++)
-    {
-        int x = block.x[i];
-        int y = block.y[i];
-        int x1 = x * WIDTH + x * INTERVAL;
-        int y1 = y * HEIGHT + y * INTERVAL;
         painter.drawPixmap(x1 + 7, y1 + 8, WIDTH, HEIGHT, pix);
     }
 }

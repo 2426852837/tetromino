@@ -69,8 +69,6 @@ private:
     Block block;        //当前方块
     Block nextBlock;    //下一个方块
     int box[MAXX][MAXY];//方格的坐标系 1表示有方格，0表示没有方格
-
-
 };
 
 

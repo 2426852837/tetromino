@@ -48,13 +48,13 @@ public slots:
     void onTimer();                             //
 public slots:
     void onRepeatTimer();                       //
-private:
+protected:
     int speed;                                  //
     int nextStage;                              //
     Qt::Key key;                                //
     Qt::Key keytemp;                            //
     int status;                                 //
-    CTetromino tetris;                          //
+    CTetromino *tetris;                         //
     QTimer *timer;                              //
     QTimer *repeatTimer;                        //
 

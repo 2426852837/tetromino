@@ -2,6 +2,7 @@
 #define QUITDIALOG_H
 
 #include <QDialog>
+#include <QIcon>
 
 namespace Ui {
 class Dialog;

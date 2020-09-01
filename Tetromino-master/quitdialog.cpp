@@ -7,6 +7,10 @@ Dialog::Dialog(QWidget *parent) :
 {
     ui->setupUi(this);
     this->setWindowTitle("退出");
+    this->setWindowIcon(QIcon(":/res/img/title.png"));
+    QPalette pal = this->palette();
+    pal.setBrush(QPalette::Window,QBrush(QPixmap(":/res/img/background.jpg")));
+    setPalette(pal);
 }
 
 Dialog::~Dialog()

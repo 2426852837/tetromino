@@ -23,6 +23,7 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     //实例化部分
 
     //界面组件实例化
+    tetris = new CTetromino;
     tetrisBox = new TetrisBox;
     nextTetrisBox = new NextTetrisBox;
     nextTetrisLabel = new QLabel(tr("<font color = white>NEXT：</font>"));
@@ -108,7 +109,7 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     move(width, height);
 
     //初始化
-    nextTetrisBox->updateNextTetris(tetris);
+    nextTetrisBox->updateNextTetris(*tetris);
     if(isCus == true)
     {
         setWindowTitle(tr("Custom mode Tetromino - OFF"));
@@ -137,8 +138,8 @@ void GameInterface::refreshScore()//刷新游戏分数标签
 
     QString str;
     QString strDiff;
-    int score = tetris.getScore();
-    int diff = tetris.getDiff();
+    int score = tetris->getScore();
+    int diff = tetris->getDiff();
     str = QString::number(score);
     strDiff = QString::number(diff);
     scoreLabel->setText(str);
@@ -173,9 +174,9 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
     {
         if (status == STATUS_ON)
         {
-            if (tetris.moveToRight())
+            if (tetris->moveToRight())
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
                 if(key == Qt::Key_0)
                 {
                     key = Qt::Key_D;
@@ -190,9 +191,9 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
     {
         if (status == STATUS_ON)
         {
-            if (tetris.moveToLeft())
+            if (tetris->moveToLeft())
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
                 if(key == Qt::Key_0)
                 {
                     key = Qt::Key_A;
@@ -208,10 +209,10 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
     {
         if (status == STATUS_ON)
         {
-            if (tetris.moveToBottom())
+            if (tetris->moveToBottom())
             {
-                tetrisBox->updateTetris(tetris);
-                nextTetrisBox->updateNextTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
+                nextTetrisBox->updateNextTetris(*tetris);
                 refreshScore();
             }
             else
@@ -221,7 +222,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
                 effect->play();
                 timer->stop();
                 QString str;
-                str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris.getScore());
+                str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris->getScore());
                 QMessageBox::information(this, tr("Game Over"), str);
                 status = STATUS_END;
                 if(isCus == true)
@@ -230,6 +231,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
                 }
                 else
                 {
+                    speed = 500;
                     setWindowTitle(tr("Tetromino - END"));
                 }
             }
@@ -237,11 +239,11 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
     }
     else if (event->key() == Qt::Key_W||event->key() == Qt::Key_Up)//向上进行旋转
     {
-        if (tetris.rotate())
+        if (tetris->rotate())
         {
             if (status == STATUS_ON)
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
                 repeatTimer->start(100);
             }
         }
@@ -250,9 +252,9 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
     else if (event->key() == Qt::Key_Space) {                      //空格直接落底
         if(status == STATUS_ON)
         {
-            if(tetris.moveToEnd())
+            if(tetris->moveToEnd())
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
             }
             else
             {
@@ -261,7 +263,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
                 effect->play();
                 timer->stop();
                 QString str;
-                str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris.getScore());
+                str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris->getScore());
                 QMessageBox::information(this, tr("Game Over"), str);
                 status = STATUS_END;
                 if(isCus == true)
@@ -270,6 +272,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
                 }
                 else
                 {
+                    speed = 500;
                     setWindowTitle(tr("Tetromino - END"));
                 }
 
@@ -294,9 +297,9 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
         }
         else if (status == STATUS_OFF)
         {
-            tetris.createBlock();
-            tetrisBox->updateTetris(tetris);
-            nextTetrisBox->updateNextTetris(tetris);
+            tetris->createBlock();
+            tetrisBox->updateTetris(*tetris);
+            nextTetrisBox->updateNextTetris(*tetris);
             refreshScore();
             if(isCus == true)
             {
@@ -324,10 +327,10 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
         }
         else if (status == STATUS_END)
         {
-            tetris.clear();
-            tetris.createBlock();
-            tetrisBox->updateTetris(tetris);
-            nextTetrisBox->updateNextTetris(tetris);
+            tetris->clear();
+            tetris->createBlock();
+            tetrisBox->updateTetris(*tetris);
+            nextTetrisBox->updateNextTetris(*tetris);
             refreshScore();
             status = STATUS_ON;
             if(isCus == true)
@@ -336,6 +339,7 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
             }
             else
             {
+                speed = 500;
                 setWindowTitle(tr("Tetromino - ON"));
             }
             setTimer();
@@ -380,27 +384,28 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
             }
             else
             {
-                tetris.clear();
-                tetrisBox->updateTetris(tetris);
-                nextTetrisBox->updateNextTetris(tetris);
+                tetris->clear();
+                tetrisBox->updateTetris(*tetris);
+                nextTetrisBox->updateNextTetris(*tetris);
                 refreshScore();
                 status = STATUS_OFF;
-                speed = 500;
+
                 if(isCus == true)
                 {
                     setWindowTitle(tr("Custom mode Tetromino - OFF"));
                 }
                 else
                 {
+                    speed = 500;
                     setWindowTitle(tr("Tetromino - OFF"));
                 }
             }
         }
         else
         {
-            tetris.clear();
-            tetrisBox->updateTetris(tetris);
-            nextTetrisBox->updateNextTetris(tetris);
+            tetris->clear();
+            tetrisBox->updateTetris(*tetris);
+            nextTetrisBox->updateNextTetris(*tetris);
             refreshScore();
             speed = 500;
             status = STATUS_OFF;
@@ -435,9 +440,9 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
             {
 
                 status = STATUS_OFF;
-                tetris.clear();
-                tetrisBox->updateTetris(tetris);
-                nextTetrisBox->updateNextTetris(tetris);
+                tetris->clear();
+                tetrisBox->updateTetris(*tetris);
+                nextTetrisBox->updateNextTetris(*tetris);
                 refreshScore();
                 if(isCus == true)
                 {
@@ -457,9 +462,9 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
             status = STATUS_OFF;
 
 
-            tetris.clear();
-            tetrisBox->updateTetris(tetris);
-            nextTetrisBox->updateNextTetris(tetris);
+            tetris->clear();
+            tetrisBox->updateTetris(*tetris);
+            nextTetrisBox->updateNextTetris(*tetris);
             refreshScore();
             if(isCus == true)
             {
@@ -489,17 +494,17 @@ void GameInterface::keyReleaseEvent(QKeyEvent *e)
 
 void GameInterface::onTimer()
 {
-    if(tetris.moveToBottom())
+    if(tetris->moveToBottom())
     {
-        tetrisBox->updateTetris(tetris);
-        nextTetrisBox->updateNextTetris(tetris);
+        tetrisBox->updateTetris(*tetris);
+        nextTetrisBox->updateNextTetris(*tetris);
         refreshScore();
     }
     else
     {
         timer->stop();
         QString str;
-        str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris.getScore());
+        str +=  QString("Game Over!\nYour Score is: %1!").arg(tetris->getScore());
         QMessageBox::information(this, tr("Game Over"), str);
         status = STATUS_END;
         if(isCus == true)
@@ -508,6 +513,7 @@ void GameInterface::onTimer()
         }
         else
         {
+            speed = 500;
             setWindowTitle(tr("Tetromino - END"));
         }
         QMediaPlayer *effect = new QMediaPlayer;
@@ -522,18 +528,18 @@ void GameInterface::onRepeatTimer()
     {
         if (status == STATUS_ON)
         {
-            if (tetris.moveToRight())
+            if (tetris->moveToRight())
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
             }
         }
     }
     else if (key == Qt::Key_A) {
         if (status == STATUS_ON)
         {
-            if (tetris.moveToLeft())
+            if (tetris->moveToLeft())
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
             }
         }
     }
@@ -575,9 +581,9 @@ void GameInterface::closeEvent(QCloseEvent *event)
 
         if (result==QMessageBox::Yes)
         {
-            tetris.clear();
-            tetrisBox->updateTetris(tetris);
-            nextTetrisBox->updateNextTetris(tetris);
+            tetris->clear();
+            tetrisBox->updateTetris(*tetris);
+            nextTetrisBox->updateNextTetris(*tetris);
             refreshScore();
             status = STATUS_OFF;
             if(isCus == true)
@@ -635,10 +641,10 @@ void GameInterface::mouseMoveEvent(QMouseEvent *e)
         {
             if (status == STATUS_ON)
             {
-                if (tetris.moveToRight())
+                if (tetris->moveToRight())
                 {
                     start.setX(e->x());
-                    tetrisBox->updateTetris(tetris);
+                    tetrisBox->updateTetris(*tetris);
                 }
             }
         }
@@ -646,10 +652,10 @@ void GameInterface::mouseMoveEvent(QMouseEvent *e)
         {
             if (status == STATUS_ON)
             {
-                if (tetris.moveToLeft())
+                if (tetris->moveToLeft())
                 {
                     start.setX(e->x());
-                    tetrisBox->updateTetris(tetris);
+                    tetrisBox->updateTetris(*tetris);
                 }
             }
         }
@@ -657,11 +663,11 @@ void GameInterface::mouseMoveEvent(QMouseEvent *e)
         {
             if (status == STATUS_ON)
             {
-                if (tetris.moveToBottom())
+                if (tetris->moveToBottom())
                 {
                     start.setY(e->y());
-                    tetrisBox->updateTetris(tetris);
-                    nextTetrisBox->updateNextTetris(tetris);
+                    tetrisBox->updateTetris(*tetris);
+                    nextTetrisBox->updateNextTetris(*tetris);
                     refreshScore();
                 }
                 else
@@ -671,7 +677,7 @@ void GameInterface::mouseMoveEvent(QMouseEvent *e)
                     effect->play();
                     timer->stop();
                     QString str;
-                    str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris.getScore());
+                    str +=  QString("Game Over1!\nYour Score is: %1!").arg(tetris->getScore());
                     QMessageBox::information(this, tr("Game Over1"), str);
                     status = STATUS_END;
                     setWindowTitle(tr("Tetromino - END"));
@@ -683,10 +689,10 @@ void GameInterface::mouseMoveEvent(QMouseEvent *e)
         {
             if (status == STATUS_ON)
             {
-                if (tetris.moveToUp())
+                if (tetris->moveToUp())
                 {
                     start.setY(e->y());
-                    tetrisBox->updateTetris(tetris);
+                    tetrisBox->updateTetris(*tetris);
                 }
             }
         }
@@ -696,11 +702,11 @@ void GameInterface::wheelEvent(QWheelEvent *e)
 {
     if(isCus == true)
     {
-        if (tetris.rotate())
+        if (tetris->rotate())
         {
             if (status == STATUS_ON)
             {
-                tetrisBox->updateTetris(tetris);
+                tetrisBox->updateTetris(*tetris);
                 repeatTimer->start(100);
             }
         }

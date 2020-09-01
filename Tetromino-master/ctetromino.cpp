@@ -199,7 +199,7 @@ bool CTetromino::isEnd()
     int j = 0;
     for (int i = 0; i < MAXX; i++)
     {
-        if (box[i][j] == 1)
+        if (box[i][j] != 0)
         {
             return true;
         }
@@ -473,7 +473,7 @@ bool CTetromino::move(int dx, int dy)
         //box中为1则返回false
         if (newY[i] >=0 && newY[i] < MAXY)
         {
-            if (box[newX[i]][newY[i]] == 1)
+            if (box[newX[i]][newY[i]] != 0)
             {
                 return false;
             }
@@ -533,7 +533,7 @@ bool CTetromino::isRotatable()
         //box中为1则返回false
         if (newY[i] >=0 && newY[i] < MAXY)
         {
-            if (box[newX[i]][newY[i]] == 1)
+            if (box[newX[i]][newY[i]] != 0)
             {
                 flag = false;
                 break;
@@ -576,7 +576,7 @@ bool CTetromino::isRotatable()
             //box中为1则返回false
             if (newY[i] >=0 && newY[i] < MAXY)
             {
-                if (box[newX[i]][newY[i]] == 1)
+                if (box[newX[i]][newY[i]] != 0)
                 {
 //                    return false;
                     flag = false;
@@ -641,7 +641,7 @@ void CTetromino::blockToBox()
         int y = block.y[i];
         if (y >= 0)
         {
-            box[x][y] = 1;
+            box[x][y] = block.color+1;
         }
     }
 }

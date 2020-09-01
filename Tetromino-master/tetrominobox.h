@@ -18,11 +18,6 @@ public:
     explicit TetrisBox(QWidget *parent = nullptr);
     void updateTetris(CTetromino tetris);       //更新数据和视图
     void paintEvent(QPaintEvent *event);    //绘制视图
-
-signals:
-
-public slots:
-
 private:
     Block block;            //用来储存Tetris中block的数据
     int box[MAXX][MAXY];    //用来存储Tetris中box的数据

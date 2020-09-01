@@ -24,7 +24,8 @@ SOURCES += \
     mainwindow.cpp \
     nexttetrominobox.cpp \
     quitdialog.cpp \
-    tetrominobox.cpp
+    tetrominobox.cpp \
+    versus.cpp
 
 HEADERS += \
     ctetromino.h \
@@ -33,7 +34,8 @@ HEADERS += \
     mainwindow.h \
     nexttetrominobox.h \
     quitdialog.h \
-    tetrominobox.h
+    tetrominobox.h \
+    versus.h
 
 FORMS += \
     form.ui \
