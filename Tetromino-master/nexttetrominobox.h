@@ -20,11 +20,6 @@ public:
     explicit NextTetrisBox(QWidget *parent = nullptr);
     void updateNextTetris(CTetromino tetris);   //更新“下一个”的数据和视图
     void paintEvent(QPaintEvent *event);    //绘制视图
-
-signals:
-
-public slots:
-
 private:
     Block nextBlock;    //“下一个”方块
 };

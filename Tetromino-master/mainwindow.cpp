@@ -28,12 +28,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_pushButton_clicked()
 {
-    quit = new Dialog(this);
-    quit->setModal(true);
-    quit->show();
+    isCus = false;
+    gi = new GameInterface(this);
+    gi->setWindowModality(Qt::ApplicationModal);
+    gi->show();
+    connect(gi,SIGNAL(ExitWin()),this,SLOT(show()));
 }
 
 void MainWindow::on_pushButton_2_clicked()
@@ -45,14 +46,11 @@ void MainWindow::on_pushButton_2_clicked()
     connect(myform,SIGNAL(ExitWin()),this,SLOT(show()));
 }
 
-
-void MainWindow::on_pushButton_clicked()
+void MainWindow::on_pushButton_3_clicked()
 {
-    isCus = false;
-    gi = new GameInterface(this);
-    gi->setWindowModality(Qt::ApplicationModal);
-    gi->show();
-    connect(gi,SIGNAL(ExitWin()),this,SLOT(show()));
+    quit = new Dialog(this);
+    quit->setModal(true);
+    quit->show();
 }
 
 void MainWindow::on_pushButton_4_clicked()

@@ -12,7 +12,6 @@ NextTetrisBox::NextTetrisBox(QWidget *parent) : QWidget(parent)
     nextBlock.centerX = -1;
     nextBlock.centerY = -1;
     nextBlock.ID = 0;
-    nextBlock.color = 10;
     //设置本“下一个”窗口的宽度和高度
     //并设置背景为黑色
     int w = CTetromino::getNextWidth();

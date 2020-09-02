@@ -58,7 +58,6 @@ private:
     Qt::Key key;                                //
     Qt::Key keytemp;                            //
     int status;                                 //
-    int gamestatus;
     CTetromino *tetris;                         //
     QTimer *timer;                              //
     QTimer *repeatTimer;                        //
@@ -68,7 +67,6 @@ private:
     QGridLayout *mainLayout;                    //
 
     QLabel *scoreLabel;
-    QLabel *diffTitleLabel;
     QLabel *diffLabel;
     QMessageBox *box1=new QMessageBox();
 

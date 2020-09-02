@@ -38,6 +38,7 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     QLabel *exit_controlLabel = new QLabel(tr("<font color = white>ESC-EXIT</font>"));
     QLabel *scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
     scoreLabel = new QLabel(tr("<font color = white>0</font>"));
+    QLabel *diffTitleLabel;
     if(isCus == true)
     {
         diffTitleLabel = new QLabel(tr("<font color = white>SPEED:</font>"));
