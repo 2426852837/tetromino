@@ -55,9 +55,9 @@ private:
     QTimer *timer4p2;
     TetrisBox *tetrisBox4p2;
     NextTetrisBox *nextTetrisBox4p2;
-    QLabel *scoreTitleLabel4p2;
+    QLabel *scoreLabel;
+    QLabel *diffLabel;
     QLabel *scoreLabel4p2;
-    QLabel *diffTitleLabel4p2;
     QLabel *diffLabel4p2;
     QLabel *nextTetrisLabel4p2;
     QList<Qt::Key> pressedKeyS;
@@ -75,27 +75,6 @@ private:
     TetrisBox *tetrisBox;                       //
     NextTetrisBox *nextTetrisBox;               //
     QGridLayout *mainLayout;                    //
-
-    QLabel *nextTetrisLabel;                    //
-    QLabel *controlLabel;                       //
-    QLabel *w_Label;                           //
-    QLabel *s_Label;                         //
-    QLabel *a_Label;                         //
-    QLabel *d_Label;
-    QLabel *up_Label;                           //
-    QLabel *down_Label;                         //
-    QLabel *left_Label;                         //
-    QLabel *right_Label;
-    QLabel *enter_controlLabel;
-    QLabel *pause_controlLabel;
-    QLabel *restart_controlLabel;
-    QLabel *exit_controlLabel;
-    QLabel *scoreTitleLabel;
-    QLabel *scoreLabel;
-    QLabel *diffTitleLabel;
-    QLabel *diffLabel;
-    QLabel *spaceLabel;
-    QLabel *backspaceLabel;
     QMessageBox *box1=new QMessageBox();
 signals:
     void ExitWin();

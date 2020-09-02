@@ -29,10 +29,15 @@ public:
     QHBoxLayout *horizontalLayout;
     QSpacerItem *horizontalSpacer;
     QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer_4;
     QPushButton *pushButton;
+    QSpacerItem *verticalSpacer;
     QPushButton *pushButton_2;
+    QSpacerItem *verticalSpacer_2;
     QPushButton *pushButton_4;
+    QSpacerItem *verticalSpacer_3;
     QPushButton *pushButton_3;
+    QSpacerItem *verticalSpacer_5;
     QSpacerItem *horizontalSpacer_2;
     QMenuBar *menubar;
     QStatusBar *statusbar;
@@ -52,6 +57,10 @@ public:
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
+        verticalSpacer_4 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_4);
+
         pushButton = new QPushButton(centralwidget);
         pushButton->setObjectName(QString::fromUtf8("pushButton"));
         QFont font;
@@ -67,6 +76,10 @@ public:
 
         verticalLayout->addWidget(pushButton);
 
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
         pushButton_2 = new QPushButton(centralwidget);
         pushButton_2->setObjectName(QString::fromUtf8("pushButton_2"));
         QFont font1;
@@ -78,6 +91,10 @@ public:
         pushButton_2->setStyleSheet(QString::fromUtf8("QPushButton { background-color: rgb(255, 255, 255);border:0px solid ; color: rgb(0, 0, 0); } QPushButton:hover { color: rgb(245, 69, 234); }"));
 
         verticalLayout->addWidget(pushButton_2);
+
+        verticalSpacer_2 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_2);
 
         pushButton_4 = new QPushButton(centralwidget);
         pushButton_4->setObjectName(QString::fromUtf8("pushButton_4"));
@@ -91,12 +108,20 @@ public:
 
         verticalLayout->addWidget(pushButton_4);
 
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_3);
+
         pushButton_3 = new QPushButton(centralwidget);
         pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
         pushButton_3->setFont(font1);
         pushButton_3->setStyleSheet(QString::fromUtf8("QPushButton { background-color: rgb(255, 255, 255);border:0px solid ; color: rgb(0, 0, 0); } QPushButton:hover { color: rgb(245, 69, 234); }"));
 
         verticalLayout->addWidget(pushButton_3);
+
+        verticalSpacer_5 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_5);
 
 
         horizontalLayout->addLayout(verticalLayout);

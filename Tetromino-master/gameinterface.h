@@ -24,6 +24,9 @@
 #define STATUS_OFF 2    //游戏未开始
 #define STATUS_END 3    //游戏结束
 
+#define NORMAL 0
+#define REVERSE 1
+
 namespace Ui {
 class GameInterface;
 }
@@ -55,6 +58,7 @@ private:
     Qt::Key key;                                //
     Qt::Key keytemp;                            //
     int status;                                 //
+    int gamestatus;
     CTetromino *tetris;                         //
     QTimer *timer;                              //
     QTimer *repeatTimer;                        //
@@ -63,21 +67,9 @@ private:
     NextTetrisBox *nextTetrisBox;               //
     QGridLayout *mainLayout;                    //
 
-    QLabel *nextTetrisLabel;                    //
-    QLabel *controlLabel;                       //
-    QLabel *up_Label;                           //
-    QLabel *down_Label;                         //
-    QLabel *left_Label;                         //
-    QLabel *right_Label;
-    QLabel *enter_controlLabel;
-    QLabel *pause_controlLabel;
-    QLabel *restart_controlLabel;
-    QLabel *exit_controlLabel;
-    QLabel *scoreTitleLabel;
     QLabel *scoreLabel;
     QLabel *diffTitleLabel;
     QLabel *diffLabel;
-    QLabel *spaceLabel;
     QMessageBox *box1=new QMessageBox();
 
     QPoint start;

@@ -21,23 +21,22 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     mainLayout = new QGridLayout;
 
     //实例化部分
-
     //界面组件实例化
     tetris = new CTetromino;
     tetrisBox = new TetrisBox;
     nextTetrisBox = new NextTetrisBox;
-    nextTetrisLabel = new QLabel(tr("<font color = white>NEXT：</font>"));
-    controlLabel = new QLabel(tr("<font color = white>CONTROL：</font>"));
-    up_Label = new QLabel(tr("<font color = white>W/↑-ROTATE</font>"));
-    down_Label = new QLabel(tr("<font color = white>S/↓-DOWN</font>"));
-    left_Label = new QLabel(tr("<font color = white>A/←-LEFT</font>"));
-    right_Label = new QLabel(tr("<font color = white>D/→-RIGHT</font>"));
-    spaceLabel = new QLabel(tr("<font color = white>SPACE-SKIP</font>"));
-    enter_controlLabel = new QLabel(tr("<font color = white>ENTER-START</font>"));
-    pause_controlLabel = new QLabel(tr("<font color = white>P-PAUSE</font>"));
-    restart_controlLabel = new QLabel(tr("<font color = white>R-RESTART</font>"));
-    exit_controlLabel = new QLabel(tr("<font color = white>ESC-EXIT</font>"));
-    scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
+    QLabel *nextTetrisLabel = new QLabel(tr("<font color = white>NEXT：</font>"));
+    QLabel *controlLabel = new QLabel(tr("<font color = white>CONTROL：</font>"));
+    QLabel *up_Label = new QLabel(tr("<font color = white>W/↑-ROTATE</font>"));
+    QLabel *down_Label = new QLabel(tr("<font color = white>S/↓-DOWN</font>"));
+    QLabel *left_Label = new QLabel(tr("<font color = white>A/←-LEFT</font>"));
+    QLabel *right_Label = new QLabel(tr("<font color = white>D/→-RIGHT</font>"));
+    QLabel *spaceLabel = new QLabel(tr("<font color = white>SPACE-SKIP</font>"));
+    QLabel *enter_controlLabel = new QLabel(tr("<font color = white>ENTER-START</font>"));
+    QLabel *pause_controlLabel = new QLabel(tr("<font color = white>P-PAUSE</font>"));
+    QLabel *restart_controlLabel = new QLabel(tr("<font color = white>R-RESTART</font>"));
+    QLabel *exit_controlLabel = new QLabel(tr("<font color = white>ESC-EXIT</font>"));
+    QLabel *scoreTitleLabel = new QLabel(tr("<font color = white>SCORE：</font>"));
     scoreLabel = new QLabel(tr("<font color = white>0</font>"));
     if(isCus == true)
     {
@@ -122,6 +121,7 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     //链接计时器
     connect(timer, SIGNAL(timeout()), this, SLOT(onTimer()));
     connect(repeatTimer,SIGNAL(timeout()),this,SLOT(onRepeatTimer()));
+
 }
 
 GameInterface::~GameInterface()
