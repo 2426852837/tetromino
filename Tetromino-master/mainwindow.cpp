@@ -55,6 +55,7 @@ void MainWindow::on_pushButton_3_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
+    isCus = false;
     vs = new versus(this);
     vs->setWindowModality(Qt::ApplicationModal);
     vs->showMaximized();

@@ -43,6 +43,8 @@ GameInterface::GameInterface(QWidget *parent): QMainWindow(parent)
     {
         diffTitleLabel = new QLabel(tr("<font color = white>SPEED:</font>"));
         diffLabel = new QLabel(tr("<font color = white></font>"));
+        diffLabel->setText(QString::number(custom.getspeed()));
+        diffLabel->setStyleSheet("QLabel{color:white;}");
     }
     else
     {
@@ -302,19 +304,6 @@ void GameInterface::keyPressEvent(QKeyEvent *event)//设置按键事件
             tetrisBox->updateTetris(*tetris);
             nextTetrisBox->updateNextTetris(*tetris);
             refreshScore();
-            if(isCus == true)
-            {
-                QString strspeed=QString::number(custom.getspeed());
-                int fontId = QFontDatabase::addApplicationFont(":/res/font/8bit.ttf");
-                QStringList fontFamilies = QFontDatabase::applicationFontFamilies(fontId);
-                QFont font("Microsoft YaHei", 15, 75);
-                font.setFamily(fontFamilies.at(0));
-                diffLabel->setFont(font);
-                diffLabel->setStyleSheet("QLabel{color:white;}");
-                diffLabel->setText(strspeed);
-                mainLayout->addWidget(diffLabel, 8, 4);
-            }
-
             status = STATUS_ON;
             if(isCus == true)
             {

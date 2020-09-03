@@ -10,8 +10,8 @@
 #include <QColor>
 #include "ctetromino.h"
 
-#define RESTX (MAXX - NEXTMAXX) / 2     //方块x坐标的转换常数
-#define RESTY 4                         //方块y坐标的转换常数
+#define FIXX (MAXX - NEXTMAXX) / 2     //方块x坐标的转换常数
+#define FIXY 4                         //方块y坐标的转换常数
 
 class NextTetrisBox : public QWidget
 {

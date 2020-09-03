@@ -29,8 +29,8 @@ void NextTetrisBox::updateNextTetris(CTetromino tetris)
     nextBlock = tetris.getNextBlock();
     for (int i = 0; i < COUNT; i++)
     {
-        nextBlock.x[i] -= RESTX;
-        nextBlock.y[i] += RESTY;
+        nextBlock.x[i] -= FIXX;
+        nextBlock.y[i] += FIXY;
     }
     //重新绘制
     repaint();

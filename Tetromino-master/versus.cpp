@@ -196,9 +196,211 @@ void versus::keyPressEvent(QKeyEvent *event)
     if(event->key() == Qt::Key_W||event->key() == Qt::Key_Up||event->key() == Qt::Key_S||event->key() == Qt::Key_Down||event->key() == Qt::Key_A||event->key() == Qt::Key_Left||event->key() == Qt::Key_Right||event->key() == Qt::Key_D||event->key() == Qt::Key_Space||event->key() == Qt::Key_Backspace)
     {
         pressedKeyS.append(static_cast<Qt::Key>(event->key()));
+        if(!event->isAutoRepeat())
+        {
+            if(pressedKeyS.contains(Qt::Key_W)&&event->key())
+            {
+                if (status == STATUS_ON&&play1Status == PLAYER_START)
+                {
+                    if (tetris->rotate())
+                    {
+                        tetrisBox->updateTetris(*tetris);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Up)&&event->key())
+            {
+
+                if (status == STATUS_ON&&play2Status == PLAYER_START)
+                {
+                    if (tetris4p2->rotate())
+                    {
+                        tetrisBox4p2->updateTetris(*tetris4p2);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_A)&&event->key())
+            {
+                if (status == STATUS_ON&&play1Status == PLAYER_START)
+                {
+                    if (tetris->moveToLeft())
+                    {
+                        tetrisBox->updateTetris(*tetris);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Left)&&event->key())
+            {
+                if (status == STATUS_ON&&play2Status == PLAYER_START)
+                {
+                    if (tetris4p2->moveToLeft())
+                    {
+                        tetrisBox4p2->updateTetris(*tetris4p2);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_D)&&event->key())
+            {
+                if (status == STATUS_ON&&play1Status == PLAYER_START)
+                {
+                    if (tetris->moveToRight())
+                    {
+                        tetrisBox->updateTetris(*tetris);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Right)&&event->key())
+            {
+                if (status == STATUS_ON&&play2Status == PLAYER_START)
+                {
+                    if (tetris4p2->moveToRight())
+                    {
+                        tetrisBox4p2->updateTetris(*tetris4p2);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_S)&&event->key())
+            {
+                if (status == STATUS_ON&&play1Status == PLAYER_START)
+                {
+                    if (tetris->moveToBottom())
+                    {
+                        tetrisBox->updateTetris(*tetris);
+                        nextTetrisBox->updateNextTetris(*tetris);
+                        refreshScore();
+                    }
+                    else
+                    {
+                        nextStage = 100;
+                        speed = 500;
+                        play1Status = PLAYER_END;
+                        if(play2Status == PLAYER_START)
+                        {
+                            timer->stop();
+                        }
+                        else
+                        {
+                            timer->stop();
+                            status = STATUS_END;
+                            gameOver();
+                            setWindowTitle(tr("Tetromino - END"));
+                        }
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Down)&&event->key())
+            {
+                if (status == STATUS_ON&&play2Status == PLAYER_START)
+                {
+                    if (tetris4p2->moveToBottom())
+                    {
+                        tetrisBox4p2->updateTetris(*tetris4p2);
+                        nextTetrisBox4p2->updateNextTetris(*tetris4p2);
+                        refreshScore();
+                    }
+                    else
+                    {
+                        nextStage4p2 = 100;
+                        speed4p2 = 500;
+                        play2Status = PLAYER_END;
+                        if(play1Status == PLAYER_START)
+                        {
+                            timer4p2->stop();
+                        }
+                        else
+                        {
+                            timer4p2->stop();
+                            status = STATUS_END;
+                            gameOver();
+                            setWindowTitle(tr("Tetromino - END"));
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            if(pressedKeyS.contains(Qt::Key_W))
+            {
+                if (status == STATUS_ON&&play1Status == PLAYER_START)
+                {
+                    if (tetris->rotate())
+                    {
+                        tetrisBox->updateTetris(*tetris);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Up))
+            {
+
+                if (status == STATUS_ON&&play2Status == PLAYER_START)
+                {
+                    if (tetris4p2->rotate())
+                    {
+                        tetrisBox4p2->updateTetris(*tetris4p2);
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Space))
+            {
+                if(status == STATUS_ON&&play1Status == PLAYER_START)
+                {
+                    if(tetris->moveToEnd())
+                    {
+                        tetrisBox->updateTetris(*tetris);
+                        refreshScore();
+                    }
+                    else
+                    {
+                        nextStage = 100;
+                        speed = 500;
+                        play1Status = PLAYER_END;
+                        if(play2Status == PLAYER_START)
+                        {
+                            timer->stop();
+                        }
+                        else
+                        {
+                            timer->stop();
+                            status = STATUS_END;
+                            gameOver();
+                            setWindowTitle(tr("Tetromino - END"));
+                        }
+                    }
+                }
+            }
+            if(pressedKeyS.contains(Qt::Key_Backspace))
+            {
+                if(status == STATUS_ON&&play2Status == PLAYER_START)
+                {
+                    if(tetris4p2->moveToEnd())
+                    {
+                        tetrisBox4p2->updateTetris(*tetris4p2);
+                        refreshScore();
+                    }
+                    else
+                    {
+                        nextStage4p2 = 100;
+                        speed4p2 = 500;
+                        play2Status = PLAYER_END;
+                        if(play1Status == PLAYER_START)
+                        {
+                            timer4p2->stop();
+                        }
+                        else
+                        {
+                            timer4p2->stop();
+                            status = STATUS_END;
+                            gameOver();
+                            setWindowTitle(tr("Tetromino - END"));
+                        }
+                    }
+                }
+            }
+        }
         if(!repeatTimer->isActive())
         {
-            repeatTimer->start(100);
+            repeatTimer->start(300);
         }
     }
     else if (event->key() == Qt::Key_Enter||event->key() == Qt::Key_Return)//开始游戏
@@ -350,6 +552,7 @@ void versus::keyReleaseEvent(QKeyEvent *e)
 
     if(!repeatTimer->isActive()&&pressedKeyS.isEmpty())
     {
+        qDebug()<<"im here";
         repeatTimer->stop();
     }
     pressedKeyS.removeAll(static_cast<Qt::Key>(e->key()));
@@ -357,27 +560,6 @@ void versus::keyReleaseEvent(QKeyEvent *e)
 
 void versus::onRepeatTimer()
 {
-    if(pressedKeyS.contains(Qt::Key_W))
-    {
-        if (status == STATUS_ON&&play1Status == PLAYER_START)
-        {
-            if (tetris->rotate())
-            {
-                tetrisBox->updateTetris(*tetris);
-            }
-        }
-    }
-    if(pressedKeyS.contains(Qt::Key_Up))
-    {
-
-        if (status == STATUS_ON&&play2Status == PLAYER_START)
-        {
-            if (tetris4p2->rotate())
-            {
-                tetrisBox4p2->updateTetris(*tetris4p2);
-            }
-        }
-    }
     if(pressedKeyS.contains(Qt::Key_A))
     {
         if (status == STATUS_ON&&play1Status == PLAYER_START)
@@ -455,62 +637,6 @@ void versus::onRepeatTimer()
             {
                 tetrisBox4p2->updateTetris(*tetris4p2);
                 nextTetrisBox4p2->updateNextTetris(*tetris4p2);
-                refreshScore();
-            }
-            else
-            {
-                nextStage4p2 = 100;
-                speed4p2 = 500;
-                play2Status = PLAYER_END;
-                if(play1Status == PLAYER_START)
-                {
-                    timer4p2->stop();
-                }
-                else
-                {
-                    timer4p2->stop();
-                    status = STATUS_END;
-                    gameOver();
-                    setWindowTitle(tr("Tetromino - END"));
-                }
-            }
-        }
-    }
-    if(pressedKeyS.contains(Qt::Key_Space))
-    {
-        if(status == STATUS_ON&&play1Status == PLAYER_START)
-        {
-            if(tetris->moveToEnd())
-            {
-                tetrisBox->updateTetris(*tetris);
-                refreshScore();
-            }
-            else
-            {
-                nextStage = 100;
-                speed = 500;
-                play1Status = PLAYER_END;
-                if(play2Status == PLAYER_START)
-                {
-                    timer->stop();
-                }
-                else
-                {
-                    timer->stop();
-                    status = STATUS_END;
-                    gameOver();
-                    setWindowTitle(tr("Tetromino - END"));
-                }
-            }
-        }
-    }
-    if(pressedKeyS.contains(Qt::Key_Backspace))
-    {
-        if(status == STATUS_ON&&play2Status == PLAYER_START)
-        {
-            if(tetris4p2->moveToEnd())
-            {
-                tetrisBox4p2->updateTetris(*tetris4p2);
                 refreshScore();
             }
             else

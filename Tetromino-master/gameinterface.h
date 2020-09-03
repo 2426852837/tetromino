@@ -6,7 +6,6 @@
 #include <QMessageBox>
 #include <QGridLayout>
 #include <QDesktopWidget>
-
 #include "nexttetrominobox.h"
 #include "ctetromino.h"
 #include "tetrominobox.h"
@@ -17,7 +16,6 @@
 #include "mainwindow.h"
 #include <QFontDatabase>
 #include <QMediaPlayer>
-
 
 #define STATUS_ON 0     //游戏正常进行
 #define STATUS_PAUSE 1  //游戏暂停
@@ -35,7 +33,6 @@ class GameInterface: public QMainWindow
 {
     Q_OBJECT
 public:
-    GameInterface(){}
     GameInterface(QWidget *parent);    //
     ~GameInterface();                           //
     void refreshScore();                        //
@@ -61,18 +58,14 @@ private:
     CTetromino *tetris;                         //
     QTimer *timer;                              //
     QTimer *repeatTimer;                        //
-
     TetrisBox *tetrisBox;                       //
     NextTetrisBox *nextTetrisBox;               //
     QGridLayout *mainLayout;                    //
-
     QLabel *scoreLabel;
     QLabel *diffLabel;
     QMessageBox *box1=new QMessageBox();
-
     QPoint start;
     QPoint movement;
-    QPoint end;
 signals:
     void ExitWin();
 };
